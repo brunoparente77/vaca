@@ -9,7 +9,7 @@ Created on Thu Nov 30 20:03:00 2023
 import os
 import sys
 import math
-import time
+import statistics
 
 from PySide6 import QtSvg
 from PySide6.QtCore import (
@@ -30,7 +30,7 @@ from PySide6.QtWidgets import (
     QMainWindow,
     QApplication,
     QToolBar,
-    QSplashScreen
+    QTableWidgetItem
 )
 
 from platform import python_version
@@ -48,6 +48,14 @@ try:
 except ImportError:
     pass
 
+
+def calc_z(tw, ta, ua, pa):
+    ro_w = 0.99997495 * (1 - (tw - 3.983035)**2 * (tw + 301.797)/(522528.9 * (tw + 69.34881)))
+    ro_a = (1 / 1000) * (0.34848 * pa - 0.009 * ua * math.e**(0.061 * ta))/(ta + 273.15)
+    z = 1 / (ro_w - ro_a) * (1 - ro_a / 8)
+    return z
+
+
 class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __init__(self):
@@ -59,13 +67,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QFontDatabase.addApplicationFont(os.path.join(basedir,"UbuntuMono-BoldItalic.ttf"))
         QFontDatabase.addApplicationFont(os.path.join(basedir,"UbuntuMono-Italic.ttf"))
         # barra de botões
-        button_calc = QAction("Calcular", self)
-        button_calc.setStatusTip("This is your button")
+        button_calc = QAction(QIcon(os.path.join(basedir,"calc_icon.svg")), "Calcular", self)
         button_calc.triggered.connect(self.calcular)
         self.toolBar.addAction(button_calc)
+        button_relat = QAction(QIcon(os.path.join(basedir,"relat_icon.svg")), "Relatório", self)
+        button_relat.triggered.connect(self.relat)
+        self.toolBar.addAction(button_relat)
+        #populando drop list com o multiplicador
+        self.instKind.addItem("Balão volumétrico", 1)
+        self.instKind.addItem("Bureta", 1)
+        self.instKind.addItem("Bureta 'digital'", 1)
+        self.instKind.addItem("Dispensador", 1)
+        self.instKind.addItem("Micropipeta de vol. fixo", 1000)
+        self.instKind.addItem("Micropipeta de vol. variável", 1000)
+        self.instKind.addItem("Micropipeta multicanal", 1000)
+        self.instKind.addItem("Pipeta graduada", 1)
+        self.instKind.addItem("Pipeta volumétrica", 1)
         
-
     def calcular(self):
+        mult = self.instKind.currentData()
         # extarindo o array
         table_array = []
         for i in range(self.tableData.columnCount()):
@@ -77,9 +97,38 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     if item.text().strip():
                         text = item.text().replace(",", ".")
                         col.append(float(text))
-        print(table_array)
-        
-        
+        ta = self.tempAmb.value()
+        pa = self.presAtm.value()
+        ua = self.umidRel.value()
+        vol_array = []
+        for d in table_array:
+            if len(d) != 0:
+                vol0 = []
+                z = calc_z(d[1], ta, ua, pa)
+                for i in d:
+                    vol0.append(i * z * mult)
+                vol = [y - x for x, y in zip(vol0, vol0[1:])]
+                vol[0] = d[0]
+                vol[1] = d[2] * z * mult
+                vol_array.append(vol)
+        res_array = []
+        for i in vol_array:
+            res = []
+            mean = statistics.mean(i[1:])
+            res.append(mean)
+            e_sis = 100 * (mean - i[0])/i[0]
+            res.append(e_sis)
+            e_ale = 100 * statistics.stdev(i[1:]) / i[1]
+            res.append(e_ale)
+            res_array.append(res)
+        for i, j in enumerate(res_array):
+            for x, y in enumerate(j):
+                self.tableRes.setItem(x, i, QTableWidgetItem("%.2f" % y))
+
+    def relat(self):
+        print("ainda não")
+            
+
         
 app = QApplication.instance()
 if not app:
@@ -89,9 +138,6 @@ app.setWindowIcon(QIcon(os.path.join(basedir, "icon.svg")))
 with open('vaca.qss', 'r') as f:
     _style = f.read()
     app.setStyleSheet(_style)
-pixmap = QPixmap(os.path.join(basedir,"splash.jpg"))
-splash = QSplashScreen(pixmap)
-splash.show()
 # App
 window = MainWindow()
 window.show()

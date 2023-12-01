@@ -6,7 +6,7 @@
 *{
   color: #555555;
   font-family: Ubuntu Mono;
-  font-size: 14px;
+  font-size: 12px;
   selection-background-color: #fecda6;
   selection-color: #ff9130;
 }
