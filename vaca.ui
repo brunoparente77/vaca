@@ -266,7 +266,7 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>500</height>
+           <height>550</height>
           </size>
          </property>
          <property name="title">
@@ -288,7 +288,7 @@
              <bool>false</bool>
             </property>
             <property name="rowCount">
-             <number>12</number>
+             <number>13</number>
             </property>
             <property name="columnCount">
              <number>12</number>
@@ -296,6 +296,11 @@
             <attribute name="horizontalHeaderVisible">
              <bool>true</bool>
             </attribute>
+            <row>
+             <property name="text">
+              <string>Volume nominal, em mL</string>
+             </property>
+            </row>
             <row>
              <property name="text">
               <string>Volume ensaiado, em mL</string>
@@ -368,62 +373,62 @@
             <column/>
             <column/>
             <column/>
-            <item row="0" column="0">
+            <item row="1" column="0">
              <property name="text">
               <string/>
              </property>
             </item>
-            <item row="0" column="1">
+            <item row="1" column="1">
              <property name="text">
               <string/>
              </property>
             </item>
-            <item row="0" column="2">
+            <item row="1" column="2">
              <property name="text">
               <string/>
              </property>
             </item>
-            <item row="0" column="3">
+            <item row="1" column="3">
              <property name="text">
               <string/>
              </property>
             </item>
-            <item row="0" column="4">
+            <item row="1" column="4">
              <property name="text">
               <string/>
              </property>
             </item>
-            <item row="0" column="5">
+            <item row="1" column="5">
              <property name="text">
               <string/>
              </property>
             </item>
-            <item row="0" column="6">
+            <item row="1" column="6">
              <property name="text">
               <string/>
              </property>
             </item>
-            <item row="0" column="7">
+            <item row="1" column="7">
              <property name="text">
               <string/>
              </property>
             </item>
-            <item row="0" column="8">
+            <item row="1" column="8">
              <property name="text">
               <string/>
              </property>
             </item>
-            <item row="0" column="9">
+            <item row="1" column="9">
              <property name="text">
               <string/>
              </property>
             </item>
-            <item row="0" column="10">
+            <item row="1" column="10">
              <property name="text">
               <string/>
              </property>
             </item>
-            <item row="0" column="11">
+            <item row="1" column="11">
              <property name="text">
               <string/>
              </property>

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'vacaDKGlBj.ui'
+## Form generated from reading UI file 'vacafefhiv.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.0
 ##
@@ -197,14 +197,14 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.groupBox_5.sizePolicy().hasHeightForWidth())
         self.groupBox_5.setSizePolicy(sizePolicy)
-        self.groupBox_5.setMinimumSize(QSize(0, 500))
+        self.groupBox_5.setMinimumSize(QSize(0, 550))
         self.verticalLayout_3 = QVBoxLayout(self.groupBox_5)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.tableData = QTableWidget(self.groupBox_5)
         if (self.tableData.columnCount() < 12):
             self.tableData.setColumnCount(12)
-        if (self.tableData.rowCount() < 12):
-            self.tableData.setRowCount(12)
+        if (self.tableData.rowCount() < 13):
+            self.tableData.setRowCount(13)
         __qtablewidgetitem = QTableWidgetItem()
         self.tableData.setVerticalHeaderItem(0, __qtablewidgetitem)
         __qtablewidgetitem1 = QTableWidgetItem()
@@ -230,35 +230,37 @@ class Ui_MainWindow(object):
         __qtablewidgetitem11 = QTableWidgetItem()
         self.tableData.setVerticalHeaderItem(11, __qtablewidgetitem11)
         __qtablewidgetitem12 = QTableWidgetItem()
-        self.tableData.setItem(0, 0, __qtablewidgetitem12)
+        self.tableData.setVerticalHeaderItem(12, __qtablewidgetitem12)
         __qtablewidgetitem13 = QTableWidgetItem()
-        self.tableData.setItem(0, 1, __qtablewidgetitem13)
+        self.tableData.setItem(1, 0, __qtablewidgetitem13)
         __qtablewidgetitem14 = QTableWidgetItem()
-        self.tableData.setItem(0, 2, __qtablewidgetitem14)
+        self.tableData.setItem(1, 1, __qtablewidgetitem14)
         __qtablewidgetitem15 = QTableWidgetItem()
-        self.tableData.setItem(0, 3, __qtablewidgetitem15)
+        self.tableData.setItem(1, 2, __qtablewidgetitem15)
         __qtablewidgetitem16 = QTableWidgetItem()
-        self.tableData.setItem(0, 4, __qtablewidgetitem16)
+        self.tableData.setItem(1, 3, __qtablewidgetitem16)
         __qtablewidgetitem17 = QTableWidgetItem()
-        self.tableData.setItem(0, 5, __qtablewidgetitem17)
+        self.tableData.setItem(1, 4, __qtablewidgetitem17)
         __qtablewidgetitem18 = QTableWidgetItem()
-        self.tableData.setItem(0, 6, __qtablewidgetitem18)
+        self.tableData.setItem(1, 5, __qtablewidgetitem18)
         __qtablewidgetitem19 = QTableWidgetItem()
-        self.tableData.setItem(0, 7, __qtablewidgetitem19)
+        self.tableData.setItem(1, 6, __qtablewidgetitem19)
         __qtablewidgetitem20 = QTableWidgetItem()
-        self.tableData.setItem(0, 8, __qtablewidgetitem20)
+        self.tableData.setItem(1, 7, __qtablewidgetitem20)
         __qtablewidgetitem21 = QTableWidgetItem()
-        self.tableData.setItem(0, 9, __qtablewidgetitem21)
+        self.tableData.setItem(1, 8, __qtablewidgetitem21)
         __qtablewidgetitem22 = QTableWidgetItem()
-        self.tableData.setItem(0, 10, __qtablewidgetitem22)
+        self.tableData.setItem(1, 9, __qtablewidgetitem22)
         __qtablewidgetitem23 = QTableWidgetItem()
-        self.tableData.setItem(0, 11, __qtablewidgetitem23)
+        self.tableData.setItem(1, 10, __qtablewidgetitem23)
+        __qtablewidgetitem24 = QTableWidgetItem()
+        self.tableData.setItem(1, 11, __qtablewidgetitem24)
         self.tableData.setObjectName(u"tableData")
         self.tableData.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.tableData.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.tableData.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
         self.tableData.setCornerButtonEnabled(False)
-        self.tableData.setRowCount(12)
+        self.tableData.setRowCount(13)
         self.tableData.setColumnCount(12)
         self.tableData.horizontalHeader().setVisible(True)
 
@@ -278,12 +280,12 @@ class Ui_MainWindow(object):
             self.tableRes.setColumnCount(12)
         if (self.tableRes.rowCount() < 3):
             self.tableRes.setRowCount(3)
-        __qtablewidgetitem24 = QTableWidgetItem()
-        self.tableRes.setVerticalHeaderItem(0, __qtablewidgetitem24)
         __qtablewidgetitem25 = QTableWidgetItem()
-        self.tableRes.setVerticalHeaderItem(1, __qtablewidgetitem25)
+        self.tableRes.setVerticalHeaderItem(0, __qtablewidgetitem25)
         __qtablewidgetitem26 = QTableWidgetItem()
-        self.tableRes.setVerticalHeaderItem(2, __qtablewidgetitem26)
+        self.tableRes.setVerticalHeaderItem(1, __qtablewidgetitem26)
+        __qtablewidgetitem27 = QTableWidgetItem()
+        self.tableRes.setVerticalHeaderItem(2, __qtablewidgetitem27)
         self.tableRes.setObjectName(u"tableRes")
         self.tableRes.setColumnCount(12)
 
@@ -337,41 +339,43 @@ class Ui_MainWindow(object):
         self.label_2.setText("")
         self.groupBox_5.setTitle(QCoreApplication.translate("MainWindow", u"Dados do ensaio:", None))
         ___qtablewidgetitem = self.tableData.verticalHeaderItem(0)
-        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"Volume ensaiado, em mL", None));
+        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"Volume nominal, em mL", None));
         ___qtablewidgetitem1 = self.tableData.verticalHeaderItem(1)
-        ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"Temperatura da \u00e1gua, em \u00b0C", None));
+        ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"Volume ensaiado, em mL", None));
         ___qtablewidgetitem2 = self.tableData.verticalHeaderItem(2)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"1\u00aa pesagem, em g", None));
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"Temperatura da \u00e1gua, em \u00b0C", None));
         ___qtablewidgetitem3 = self.tableData.verticalHeaderItem(3)
-        ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"2\u00aa pesagem, em g", None));
+        ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"1\u00aa pesagem, em g", None));
         ___qtablewidgetitem4 = self.tableData.verticalHeaderItem(4)
-        ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"3\u00aa pesagem, em g", None));
+        ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"2\u00aa pesagem, em g", None));
         ___qtablewidgetitem5 = self.tableData.verticalHeaderItem(5)
-        ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"4\u00aa pesagem, em g", None));
+        ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"3\u00aa pesagem, em g", None));
         ___qtablewidgetitem6 = self.tableData.verticalHeaderItem(6)
-        ___qtablewidgetitem6.setText(QCoreApplication.translate("MainWindow", u"5\u00aa pesagem, em g", None));
+        ___qtablewidgetitem6.setText(QCoreApplication.translate("MainWindow", u"4\u00aa pesagem, em g", None));
         ___qtablewidgetitem7 = self.tableData.verticalHeaderItem(7)
-        ___qtablewidgetitem7.setText(QCoreApplication.translate("MainWindow", u"6\u00aa pesagem, em g", None));
+        ___qtablewidgetitem7.setText(QCoreApplication.translate("MainWindow", u"5\u00aa pesagem, em g", None));
         ___qtablewidgetitem8 = self.tableData.verticalHeaderItem(8)
-        ___qtablewidgetitem8.setText(QCoreApplication.translate("MainWindow", u"7\u00aa pesagem, em g", None));
+        ___qtablewidgetitem8.setText(QCoreApplication.translate("MainWindow", u"6\u00aa pesagem, em g", None));
         ___qtablewidgetitem9 = self.tableData.verticalHeaderItem(9)
-        ___qtablewidgetitem9.setText(QCoreApplication.translate("MainWindow", u"8\u00aa pesagem, em g", None));
+        ___qtablewidgetitem9.setText(QCoreApplication.translate("MainWindow", u"7\u00aa pesagem, em g", None));
         ___qtablewidgetitem10 = self.tableData.verticalHeaderItem(10)
-        ___qtablewidgetitem10.setText(QCoreApplication.translate("MainWindow", u"9\u00aa pesagem, em g", None));
+        ___qtablewidgetitem10.setText(QCoreApplication.translate("MainWindow", u"8\u00aa pesagem, em g", None));
         ___qtablewidgetitem11 = self.tableData.verticalHeaderItem(11)
-        ___qtablewidgetitem11.setText(QCoreApplication.translate("MainWindow", u"10\u00aa pesagem, em g", None));
+        ___qtablewidgetitem11.setText(QCoreApplication.translate("MainWindow", u"9\u00aa pesagem, em g", None));
+        ___qtablewidgetitem12 = self.tableData.verticalHeaderItem(12)
+        ___qtablewidgetitem12.setText(QCoreApplication.translate("MainWindow", u"10\u00aa pesagem, em g", None));
 
         __sortingEnabled = self.tableData.isSortingEnabled()
         self.tableData.setSortingEnabled(False)
         self.tableData.setSortingEnabled(__sortingEnabled)
 
         self.groupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"Resultados:", None))
-        ___qtablewidgetitem12 = self.tableRes.verticalHeaderItem(0)
-        ___qtablewidgetitem12.setText(QCoreApplication.translate("MainWindow", u"Volume medido, em mL", None));
-        ___qtablewidgetitem13 = self.tableRes.verticalHeaderItem(1)
-        ___qtablewidgetitem13.setText(QCoreApplication.translate("MainWindow", u"Erro sistem\u00e1tico, em %", None));
-        ___qtablewidgetitem14 = self.tableRes.verticalHeaderItem(2)
-        ___qtablewidgetitem14.setText(QCoreApplication.translate("MainWindow", u"Erro aleat\u00f3rio, em %", None));
+        ___qtablewidgetitem13 = self.tableRes.verticalHeaderItem(0)
+        ___qtablewidgetitem13.setText(QCoreApplication.translate("MainWindow", u"Volume medido, em mL", None));
+        ___qtablewidgetitem14 = self.tableRes.verticalHeaderItem(1)
+        ___qtablewidgetitem14.setText(QCoreApplication.translate("MainWindow", u"Erro sistem\u00e1tico, em %", None));
+        ___qtablewidgetitem15 = self.tableRes.verticalHeaderItem(2)
+        ___qtablewidgetitem15.setText(QCoreApplication.translate("MainWindow", u"Erro aleat\u00f3rio, em %", None));
         self.toolBar.setWindowTitle(QCoreApplication.translate("MainWindow", u"toolBar", None))
     # retranslateUi
 

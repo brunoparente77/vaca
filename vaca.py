@@ -24,7 +24,8 @@ from PySide6.QtGui import (
     QFont,
     QFontDatabase,
     QFontInfo,
-    QPixmap
+    QPixmap,
+    QColor
 )
 from PySide6.QtWidgets import (
     QMainWindow,
@@ -36,6 +37,7 @@ from PySide6.QtWidgets import (
 
 from platform import python_version
 from ui_main_vaca import Ui_MainWindow
+from vaca_conf import check_conformidade
 
 basedir = os.path.dirname(__file__)
 
@@ -89,10 +91,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     
     def muda_unidade(self):
         if self.instKind.currentData() == 1:
-            self.tableData.setVerticalHeaderItem(0, QTableWidgetItem("Volume ensaiado, em mL"))
+            self.tableData.setVerticalHeaderItem(0, QTableWidgetItem("Volume nominal, em mL"))
+            self.tableData.setVerticalHeaderItem(1, QTableWidgetItem("Volume ensaiado, em mL"))
             self.tableRes.setVerticalHeaderItem(0, QTableWidgetItem("Volume medido, em mL"))
         else:
-            self.tableData.setVerticalHeaderItem(0, QTableWidgetItem("Volume ensaiado, em µL"))
+            self.tableData.setVerticalHeaderItem(0, QTableWidgetItem("Volume nominal, em µL"))
+            self.tableData.setVerticalHeaderItem(1, QTableWidgetItem("Volume ensaiado, em µL"))
             self.tableRes.setVerticalHeaderItem(0, QTableWidgetItem("Volume medido, em µL"))
 
 
@@ -116,27 +120,37 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for d in table_array:
             if len(d) != 0:
                 vol0 = []
-                z = calc_z(d[1], ta, ua, pa)
+                z = calc_z(d[2], ta, ua, pa)
                 for i in d:
                     vol0.append(i * z * mult)
                 vol = [y - x for x, y in zip(vol0, vol0[1:])]
                 vol[0] = d[0]
-                vol[1] = d[2] * z * mult
+                vol[1] = d[1]
+                vol[2] = d[3] * z * mult
                 vol_array.append(vol)
         res_array = []
         for i in vol_array:
             res = []
-            mean = statistics.mean(i[1:])
+            mean = statistics.mean(i[2:])
             res.append(mean)
-            e_sis = 100 * (mean - i[0])/i[0]
+            e_sis = 100 * (mean - i[1])/i[1]
             res.append(e_sis)
-            e_ale = 100 * statistics.stdev(i[1:]) / i[1]
+            e_ale = 100 * statistics.stdev(i[2:]) / i[1]
             res.append(e_ale)
             res_array.append(res)
         for i, j in enumerate(res_array):
             for x, y in enumerate(j):
                 self.tableRes.setItem(x, i, QTableWidgetItem("%.2f" % y))
         self.tableRes.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+        for column in range(self.tableRes.columnCount()):
+            _item = self.tableRes.item(1, column)
+            if _item:
+                conf = check_conformidade("msa",
+                                   float(self.tableData.item(0,column).text()),
+                                   float(self.tableData.item(1,column).text()),
+                                   abs(float(_item.text())),
+                                   True)
+                print(conf)
 
     def relat(self):
         print("ainda não")
