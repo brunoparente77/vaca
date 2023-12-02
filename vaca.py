@@ -74,7 +74,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         button_relat = QAction(QIcon(os.path.join(basedir,"relat_icon.svg")), "Relatório", self)
         button_relat.triggered.connect(self.relat)
         self.toolBar.addAction(button_relat)
-        #populando drop list com o multiplicador
+        #populando drop list com o multiplicador pra apresentar o resultado em µL ou mL
         self.instKind.addItem("Balão volumétrico", 1)
         self.instKind.addItem("Bureta", 1)
         self.instKind.addItem("Bureta 'digital'", 1)
@@ -84,7 +84,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.instKind.addItem("Micropipeta multicanal", 1000)
         self.instKind.addItem("Pipeta graduada", 1)
         self.instKind.addItem("Pipeta volumétrica", 1)
-        
+        # conecta o combo pra mudar as unidades entre µL e mL
+        self.instKind.currentIndexChanged.connect(self.muda_unidade)
+    
+    def muda_unidade(self):
+        if self.instKind.currentData() == 1:
+            self.tableData.setVerticalHeaderItem(0, QTableWidgetItem("Volume ensaiado, em mL"))
+            self.tableRes.setVerticalHeaderItem(0, QTableWidgetItem("Volume medido, em mL"))
+        else:
+            self.tableData.setVerticalHeaderItem(0, QTableWidgetItem("Volume ensaiado, em µL"))
+            self.tableRes.setVerticalHeaderItem(0, QTableWidgetItem("Volume medido, em µL"))
+
+
     def calcular(self):
         mult = self.instKind.currentData()
         # extarindo o array

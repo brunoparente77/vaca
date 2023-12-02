@@ -298,7 +298,7 @@
             </attribute>
             <row>
              <property name="text">
-              <string>Volume ensaiado, em µL</string>
+              <string>Volume ensaiado, em mL</string>
              </property>
             </row>
             <row>
@@ -452,7 +452,7 @@
             </property>
             <row>
              <property name="text">
-              <string>Volume medido, em µL</string>
+              <string>Volume medido, em mL</string>
              </property>
             </row>
             <row>
