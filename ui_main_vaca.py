@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'vacagmVmBX.ui'
+## Form generated from reading UI file 'vacaultqOO.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.2
+## Created by: Qt User Interface Compiler version 6.6.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -40,27 +40,27 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.groupBox = QGroupBox(self.widget_2)
         self.groupBox.setObjectName(u"groupBox")
-        self.formLayout_5 = QFormLayout(self.groupBox)
-        self.formLayout_5.setObjectName(u"formLayout_5")
+        self.formLayout = QFormLayout(self.groupBox)
+        self.formLayout.setObjectName(u"formLayout")
         self.label_28 = QLabel(self.groupBox)
         self.label_28.setObjectName(u"label_28")
 
-        self.formLayout_5.setWidget(0, QFormLayout.LabelRole, self.label_28)
+        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.label_28)
 
         self.instId = QLineEdit(self.groupBox)
         self.instId.setObjectName(u"instId")
 
-        self.formLayout_5.setWidget(0, QFormLayout.FieldRole, self.instId)
+        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.instId)
 
         self.label_29 = QLabel(self.groupBox)
         self.label_29.setObjectName(u"label_29")
 
-        self.formLayout_5.setWidget(1, QFormLayout.LabelRole, self.label_29)
+        self.formLayout.setWidget(1, QFormLayout.LabelRole, self.label_29)
 
         self.instKind = QComboBox(self.groupBox)
         self.instKind.setObjectName(u"instKind")
 
-        self.formLayout_5.setWidget(1, QFormLayout.FieldRole, self.instKind)
+        self.formLayout.setWidget(1, QFormLayout.FieldRole, self.instKind)
 
 
         self.verticalLayout.addWidget(self.groupBox)
@@ -192,6 +192,12 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.groupBox_5 = QGroupBox(self.widget)
         self.groupBox_5.setObjectName(u"groupBox_5")
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.groupBox_5.sizePolicy().hasHeightForWidth())
+        self.groupBox_5.setSizePolicy(sizePolicy)
+        self.groupBox_5.setMinimumSize(QSize(0, 500))
         self.verticalLayout_3 = QVBoxLayout(self.groupBox_5)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.tableData = QTableWidget(self.groupBox_5)
@@ -263,6 +269,8 @@ class Ui_MainWindow(object):
 
         self.groupBox_4 = QGroupBox(self.widget)
         self.groupBox_4.setObjectName(u"groupBox_4")
+        sizePolicy.setHeightForWidth(self.groupBox_4.sizePolicy().hasHeightForWidth())
+        self.groupBox_4.setSizePolicy(sizePolicy)
         self.verticalLayout_4 = QVBoxLayout(self.groupBox_4)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.tableRes = QTableWidget(self.groupBox_4)
@@ -297,9 +305,6 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.toolBar = QToolBar(MainWindow)
         self.toolBar.setObjectName(u"toolBar")
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.toolBar.sizePolicy().hasHeightForWidth())
         self.toolBar.setSizePolicy(sizePolicy)
         self.toolBar.setMovable(False)

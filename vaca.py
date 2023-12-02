@@ -30,6 +30,7 @@ from PySide6.QtWidgets import (
     QMainWindow,
     QApplication,
     QToolBar,
+    QTableWidget,
     QTableWidgetItem
 )
 
@@ -124,6 +125,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for i, j in enumerate(res_array):
             for x, y in enumerate(j):
                 self.tableRes.setItem(x, i, QTableWidgetItem("%.2f" % y))
+        self.tableRes.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
 
     def relat(self):
         print("ainda não")

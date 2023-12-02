@@ -5,8 +5,8 @@
 
 *{
   color: #555555;
-  font-family: Ubuntu Mono;
-  font-size: 12px;
+  font-family: Cantarell;
+  font-size: 14px;
   selection-background-color: #fecda6;
   selection-color: #ff9130;
 }
