@@ -161,28 +161,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Não é legal o usuário poder editar os resultos. Bloqueando!
         self.tableRes.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         # Calculando os limites, de acordo com a norma ISO do instrumento
-        v_nom =  float(self.tableData.item(0,column).text())
-        v_s = float(self.tableData.item(1,column).text())
         match self.instKind.currentData()[1]:
             case "msa":
-                # verificando qual o limite dos erros na ISO 8655-2:2022
-                if v_nom > 5000:
-                    e_vnom = [0.6, 0.3]
-                elif v_nom > 50:
-                    e_vnom = [0.8, 0.3]
-                elif v_nom > 10:
-                    e_vnom = [1.0, 0.5]
-                elif v_nom > 5:
-                    e_vnom = [1.2, 0.8]
-                elif v_nom > 3:
-                    e_vnom = [2.5, 1.5]
-                else:
-                    e_vnom = [2.5, 2.0]
                 # comparando o erro sistemático com o limite da norma
                 for column in range(self.tableRes.columnCount()):
                     _item = self.tableRes.item(1, column)
                     if _item:
-                        limite = v_nom / v_s * e_vnom[0]
+                        v_nom =  float(self.tableData.item(0,column).text())
+                        v_s = float(self.tableData.item(1,column).text())
+                        # verificando qual o limite dos erros na ISO 8655-2:2022
+                        if v_nom > 5000:
+                            e_vnom = 0.6
+                        elif v_nom > 50:
+                            e_vnom = 0.8
+                        elif v_nom > 10:
+                            e_vnom = 1.0
+                        elif v_nom > 5:
+                            e_vnom = 1.2
+                        else:
+                            e_vnom = 2.5                    
+                        limite = v_nom / v_s * e_vnom
                         if abs(float(_item.text())) > limite:
                             conf = False
                         else:
@@ -194,7 +192,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 for column in range(self.tableRes.columnCount()):
                     _item = self.tableRes.item(2, column)
                     if _item:
-                        limite = v_nom / v_s * e_vnom[1]
+                        v_nom =  float(self.tableData.item(0,column).text())
+                        v_s = float(self.tableData.item(1,column).text())
+                        # verificando qual o limite dos erros na ISO 8655-2:2022
+                        if v_nom > 50:
+                            e_vnom = 0.3
+                        elif v_nom > 10:
+                            e_vnom = 0.5
+                        elif v_nom > 5:
+                            e_vnom = 0.8
+                        elif v_nom > 3:
+                            e_vnom = 1.5
+                        else:
+                            e_vnom = 2.0
+                        limite = v_nom / v_s * e_vnom
                         if abs(float(_item.text())) > limite:
                             conf = False
                         else:
@@ -203,22 +214,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             _item.setToolTip("Deu ruim de acordo com a norma ISO 8655-2:2022.")
                             _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
             case "msd2":
-                # verificando qual o limite dos erros na ISO 8655-2:2022
-                if v_nom > 100:
-                    e_vnom = [1.2, 0.4]
-                elif v_nom > 20:
-                    e_vnom = [1.4, 0.6]
-                elif v_nom > 10:
-                    e_vnom = [2.0, 0.8]
-                elif v_nom > 5:
-                    e_vnom = [2.0, 1.0]
-                else:
-                    e_vnom = [2.5, 1.5]
-                # comparando o erro sistemático com o limite da norma
                 for column in range(self.tableRes.columnCount()):
-                    _item = self.tableRes.item(1, column)
+                    _item = self.tableRes.item(1, column)               
                     if _item:
-                        limite = v_nom / v_s * e_vnom[0]
+                        v_nom =  float(self.tableData.item(0,column).text())
+                        v_s = float(self.tableData.item(1,column).text())
+                        # verificando qual o limite dos erros na ISO 8655-2:2022
+                        if v_nom > 100:
+                            e_vnom = 1.2
+                        elif v_nom > 20:
+                            e_vnom = 1.4
+                        elif v_nom > 5:
+                            e_vnom = 2.0
+                        else:
+                            e_vnom = 2.5
+                        limite = v_nom / v_s * e_vnom
                         if abs(float(_item.text())) > limite:
                             conf = False
                         else:
@@ -230,7 +240,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 for column in range(self.tableRes.columnCount()):
                     _item = self.tableRes.item(2, column)
                     if _item:
-                        limite = v_nom / v_s * e_vnom[1]
+                        v_nom =  float(self.tableData.item(0,column).text())
+                        v_s = float(self.tableData.item(1,column).text())
+                        # verificando qual o limite dos erros na ISO 8655-2:2022
+                        if v_nom > 100:
+                            e_vnom = 0.4
+                        elif v_nom > 20:
+                            e_vnom = 0.6
+                        elif v_nom > 10:
+                            e_vnom = 0.8
+                        elif v_nom > 5:
+                            e_vnom = 1.0
+                        else:
+                            e_vnom = 1.5
+                        limite = v_nom / v_s * e_vnom
                         if abs(float(_item.text())) > limite:
                             conf = False
                         else:
@@ -239,24 +262,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             _item.setToolTip("Deu ruim de acordo com a norma ISO 8855-2:2022.")
                             _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
             case "mm":
-                # verificando qual o limite dos erros na ISO 8655-2:2022
-                if v_nom > 50:
-                    e_vnom = [1.6, 0.6]
-                elif v_nom > 20:
-                    e_vnom = [2.0, 0.8]
-                elif v_nom > 10:
-                    e_vnom = [2.0, 1.0]
-                elif v_nom > 5:
-                    e_vnom = [2.4, 1.6]
-                elif v_nom > 2:
-                    e_vnom = [5.0, 3.0]
-                else:
-                    e_vnom = [8.0, 8.0]
                 # comparando o erro sistemático com o limite da norma
-                for column in range(self.tableRes.columnCount()):
+                for column in range(self.tableRes.columnCount()):                
                     _item = self.tableRes.item(1, column)
                     if _item:
-                        limite = v_nom / v_s * e_vnom[0]
+                        v_nom =  float(self.tableData.item(0,column).text())
+                        v_s = float(self.tableData.item(1,column).text())
+                        # verificando qual o limite dos erros na ISO 8655-2:2022
+                        if v_nom > 50:
+                            e_vnom = 1.6
+                        elif v_nom > 10:
+                            e_vnom = 2.0
+                        elif v_nom > 5:
+                            e_vnom = 2.4
+                        elif v_nom > 2:
+                            e_vnom = 5.0
+                        else:
+                            e_vnom = 8.0
+                        limite = v_nom / v_s * e_vnom
                         if abs(float(_item.text())) > limite:
                             conf = False
                         else:
@@ -268,7 +291,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 for column in range(self.tableRes.columnCount()):
                     _item = self.tableRes.item(2, column)
                     if _item:
-                        limite = v_nom / v_s * e_vnom[1]
+                        v_nom =  float(self.tableData.item(0,column).text())
+                        v_s = float(self.tableData.item(1,column).text())
+                        # verificando qual o limite dos erros na ISO 8655-2:2022
+                        if v_nom > 50:
+                            e_vnom = 0.6
+                        elif v_nom > 20:
+                            e_vnom = 0.8
+                        elif v_nom > 10:
+                            e_vnom = 1.0
+                        elif v_nom > 5:
+                            e_vnom = 1.6
+                        elif v_nom > 2:
+                            e_vnom = 3.0
+                        else:
+                            e_vnom = 8.0
+                        limite = v_nom / v_s * e_vnom
                         if abs(float(_item.text())) > limite:
                             conf = False
                         else:
@@ -277,24 +315,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             _item.setToolTip("Deu ruim de acordo com a norma ISO 8655-2:2022.")
                             _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
             case "bda":
-                # verificando qual o limite dos erros na ISO 8655-3:2022
-                if v_nom > 50:
-                    e_vnom = [0.2, 0.03]
-                elif v_nom > 25:
-                    e_vnom = [0.2, 0.05]
-                elif v_nom > 5:
-                    e_vnom = [0.2, 0.07]
-                elif v_nom > 2:
-                    e_vnom = [0.3, 0.1]
-                elif v_nom > 1:
-                    e_vnom = [0.5, 0.1]
-                else:
-                    e_vnom = [0.6, 0.1]
                 # comparando o erro sistemático com o limite da norma
                 for column in range(self.tableRes.columnCount()):
-                    _item = self.tableRes.item(1, column)
+                    item = self.tableRes.item(1, column)
                     if _item:
-                        limite = v_nom / v_s * e_vnom[0]
+                        v_nom =  float(self.tableData.item(0, column).text())
+                        v_s = float(self.tableData.item(1, column).text())
+                        # verificando qual o limite dos erros na ISO 8655-3:2022
+                        if v_nom > 5:
+                            e_vnom = 0.2
+                        elif v_nom > 2:
+                            e_vnom = 0.3
+                        elif v_nom > 1:
+                            e_vnom = 0.5
+                        else:
+                            e_vnom = 0.6
+                        limite = v_nom / v_s * e_vnom
                         if abs(float(_item.text())) > limite:
                             conf = False
                         else:
@@ -306,7 +342,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 for column in range(self.tableRes.columnCount()):
                     _item = self.tableRes.item(2, column)
                     if _item:
-                        limite = v_nom / v_s * e_vnom[1]
+                        v_nom =  float(self.tableData.item(0, column).text())
+                        v_s = float(self.tableData.item(1, column).text())
+                        # verificando qual o limite dos erros na ISO 8655-3:2022
+                        if v_nom > 50:
+                            e_vnom = 0.03
+                        elif v_nom > 25:
+                            e_vnom = 0.05
+                        elif v_nom > 5:
+                            e_vnom = 0.07
+                        else:
+                            e_vnom = 0.1
+                        limite = v_nom / v_s * e_vnom
                         if abs(float(_item.text())) > limite:
                             conf = False
                         else:
@@ -315,20 +362,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             _item.setToolTip("Deu ruim de acordo com a norma ISO 8655-3:2022.")
                             _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
             case "bdm":
-                # verificando qual o limite dos erros na ISO 8655-3:2022
-                if v_nom > 10:
-                    e_vnom = [0.2, 0.1]
-                elif v_nom > 2:
-                    e_vnom = [0.3, 0.1]
-                elif v_nom > 1:
-                    e_vnom = [0.5, 0.1]
-                else:
-                    e_vnom = [0.6, 0.1]
                 # comparando o erro sistemático com o limite da norma
                 for column in range(self.tableRes.columnCount()):
                     _item = self.tableRes.item(1, column)
                     if _item:
-                        limite = v_nom / v_s * e_vnom[0]
+                        v_nom =  float(self.tableData.item(0,column).text())
+                        v_s = float(self.tableData.item(1,column).text())
+                        # verificando qual o limite dos erros na ISO 8655-3:2022
+                        if v_nom > 10:
+                            e_vnom = 0.2
+                        elif v_nom > 2:
+                            e_vnom = 0.3
+                        elif v_nom > 1:
+                            e_vnom = 0.5
+                        else:
+                        e_vnom = 0.6
+                        limite = v_nom / v_s * e_vnom
                         if abs(float(_item.text())) > limite:
                             conf = False
                         else:
@@ -340,7 +389,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 for column in range(self.tableRes.columnCount()):
                     _item = self.tableRes.item(2, column)
                     if _item:
-                        limite = v_nom / v_s * e_vnom[1]
+                        v_nom =  float(self.tableData.item(0,column).text())
+                        v_s = float(self.tableData.item(1,column).text())
+                        # verificando qual o limite dos erros na ISO 8655-3:2022
+                        e_vnom = 0.1
+                        limite = v_nom / v_s * e_vnom
                         if abs(float(_item.text())) > limite:
                             conf = False
                         else:
@@ -349,26 +402,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             _item.setToolTip("Deu ruim de acordo com a norma ISO 8655-3:2022.")
                             _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
             case "d":
-                # verificando qual o limite dos erros na ISO 8655-5:2022
-                if v_nom > 0.5:
-                    e_vnom = [0.6, 0.2]
-                elif v_nom > 0.2:
-                    e_vnom = [1.0, 0.2]
-                elif v_nom > 0.1:
-                    e_vnom = [1.0, 0.3]
-                elif v_nom > 0.05:
-                    e_vnom = [1.5, 0.3]
-                elif v_nom > 0.02:
-                    e_vnom = [1.5, 0.4]
-                elif v_nom > 0.01:
-                    e_vnom = [2.0, 0.5]
-                else:
-                    e_vnom = [2.0, 1.0]
                 # comparando o erro sistemático com o limite da norma
-                for column in range(self.tableRes.columnCount()):
+                for column in range(self.tableRes.columnCount()):                
                     _item = self.tableRes.item(1, column)
                     if _item:
-                        limite = v_nom / v_s * e_vnom[0]
+                        v_nom =  float(self.tableData.item(0,column).text())
+                        v_s = float(self.tableData.item(1,column).text())
+                        # verificando qual o limite dos erros na ISO 8655-5:2022
+                        if v_nom > 0.5:
+                            e_vnom = 0.6
+                        elif v_nom > 0.1:
+                            e_vnom = 1.0
+                        elif v_nom > 0.02:
+                            e_vnom = 1.5
+                        else:
+                            e_vnom = 2.0
+                        limite = v_nom / v_s * e_vnom
                         if abs(float(_item.text())) > limite:
                             conf = False
                         else:
@@ -380,7 +429,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 for column in range(self.tableRes.columnCount()):
                     _item = self.tableRes.item(2, column)
                     if _item:
-                        limite = v_nom / v_s * e_vnom[1]
+                        v_nom =  float(self.tableData.item(0,column).text())
+                        v_s = float(self.tableData.item(1,column).text())
+                        # verificando qual o limite dos erros na ISO 8655-5:2022
+                        if v_nom > 0.2:
+                            e_vnom = 0.2
+                        elif v_nom > 0.05:
+                            e_vnom = 0.3
+                        elif v_nom > 0.02:
+                            e_vnom = 0.4
+                        elif v_nom > 0.01:
+                            e_vnom = 0.5
+                        else:
+                            e_vnom = 1.0
+                        limite = v_nom / v_s * e_vnom
                         if abs(float(_item.text())) > limite:
                             conf = False
                         else:
