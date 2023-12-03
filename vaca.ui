@@ -31,13 +31,13 @@
      <widget class="QWidget" name="widget_2" native="true">
       <property name="minimumSize">
        <size>
-        <width>350</width>
+        <width>380</width>
         <height>0</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>350</width>
+        <width>380</width>
         <height>16777215</height>
        </size>
       </property>
@@ -142,10 +142,10 @@
              <string> hPa</string>
             </property>
             <property name="minimum">
-             <double>950.000000000000000</double>
+             <double>600.000000000000000</double>
             </property>
             <property name="maximum">
-             <double>1050.000000000000000</double>
+             <double>1100.000000000000000</double>
             </property>
             <property name="singleStep">
              <double>0.100000000000000</double>
@@ -167,8 +167,11 @@
             <property name="suffix">
              <string>°C</string>
             </property>
+            <property name="minimum">
+             <double>15.000000000000000</double>
+            </property>
             <property name="maximum">
-             <double>30.000000000000000</double>
+             <double>27.000000000000000</double>
             </property>
             <property name="singleStep">
              <double>0.500000000000000</double>
@@ -198,10 +201,10 @@
              <string>%</string>
             </property>
             <property name="minimum">
-             <double>10.000000000000000</double>
+             <double>20.000000000000000</double>
             </property>
             <property name="maximum">
-             <double>100.000000000000000</double>
+             <double>80.000000000000000</double>
             </property>
             <property name="singleStep">
              <double>0.500000000000000</double>

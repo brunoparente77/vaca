@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'vacafefhiv.ui'
+## Form generated from reading UI file 'vacavHkZfN.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.0
 ##
@@ -34,8 +34,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.widget_2 = QWidget(self.centralwidget)
         self.widget_2.setObjectName(u"widget_2")
-        self.widget_2.setMinimumSize(QSize(350, 0))
-        self.widget_2.setMaximumSize(QSize(350, 16777215))
+        self.widget_2.setMinimumSize(QSize(380, 0))
+        self.widget_2.setMaximumSize(QSize(380, 16777215))
         self.verticalLayout = QVBoxLayout(self.widget_2)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.groupBox = QGroupBox(self.widget_2)
@@ -128,8 +128,8 @@ class Ui_MainWindow(object):
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.presAtm = QDoubleSpinBox(self.groupBox_3)
         self.presAtm.setObjectName(u"presAtm")
-        self.presAtm.setMinimum(950.000000000000000)
-        self.presAtm.setMaximum(1050.000000000000000)
+        self.presAtm.setMinimum(600.000000000000000)
+        self.presAtm.setMaximum(1100.000000000000000)
         self.presAtm.setSingleStep(0.100000000000000)
         self.presAtm.setValue(1013.250000000000000)
 
@@ -142,7 +142,8 @@ class Ui_MainWindow(object):
 
         self.tempAmb = QDoubleSpinBox(self.groupBox_3)
         self.tempAmb.setObjectName(u"tempAmb")
-        self.tempAmb.setMaximum(30.000000000000000)
+        self.tempAmb.setMinimum(15.000000000000000)
+        self.tempAmb.setMaximum(27.000000000000000)
         self.tempAmb.setSingleStep(0.500000000000000)
         self.tempAmb.setValue(20.000000000000000)
 
@@ -160,8 +161,8 @@ class Ui_MainWindow(object):
 
         self.umidRel = QDoubleSpinBox(self.groupBox_3)
         self.umidRel.setObjectName(u"umidRel")
-        self.umidRel.setMinimum(10.000000000000000)
-        self.umidRel.setMaximum(100.000000000000000)
+        self.umidRel.setMinimum(20.000000000000000)
+        self.umidRel.setMaximum(80.000000000000000)
         self.umidRel.setSingleStep(0.500000000000000)
         self.umidRel.setValue(45.000000000000000)
 
