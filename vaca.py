@@ -84,8 +84,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # e tipo de instrumento
         self.instKind.addItem("Balão volumétrico", (1, "bv"))
         self.instKind.addItem("Bureta", (1, "b"))
-        self.instKind.addItem("Bureta 'digital' manual", (1, "bdm"))
-        self.instKind.addItem("Bureta digital motorizada", (1, "bda"))
+        self.instKind.addItem('Bureta "digital" manual', (1, "bdm"))
+        self.instKind.addItem('Bureta "digital" motorizada', (1, "bda"))
         self.instKind.addItem("Dispensador", (1, "d"))
         self.instKind.addItem("Micropipeta tipo A|D1", (1000, "msa"))
         self.instKind.addItem("Micropipeta tipo D2", (1000, "msd2"))
@@ -376,7 +376,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         elif v_nom > 1:
                             e_vnom = 0.5
                         else:
-                        e_vnom = 0.6
+                            e_vnom = 0.6
                         limite = v_nom / v_s * e_vnom
                         if abs(float(_item.text())) > limite:
                             conf = False
