@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'vacavHkZfN.ui'
+## Form generated from reading UI file 'vacaBFEbcL.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.0
+## Created by: Qt User Interface Compiler version 6.6.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -232,30 +232,6 @@ class Ui_MainWindow(object):
         self.tableData.setVerticalHeaderItem(11, __qtablewidgetitem11)
         __qtablewidgetitem12 = QTableWidgetItem()
         self.tableData.setVerticalHeaderItem(12, __qtablewidgetitem12)
-        __qtablewidgetitem13 = QTableWidgetItem()
-        self.tableData.setItem(1, 0, __qtablewidgetitem13)
-        __qtablewidgetitem14 = QTableWidgetItem()
-        self.tableData.setItem(1, 1, __qtablewidgetitem14)
-        __qtablewidgetitem15 = QTableWidgetItem()
-        self.tableData.setItem(1, 2, __qtablewidgetitem15)
-        __qtablewidgetitem16 = QTableWidgetItem()
-        self.tableData.setItem(1, 3, __qtablewidgetitem16)
-        __qtablewidgetitem17 = QTableWidgetItem()
-        self.tableData.setItem(1, 4, __qtablewidgetitem17)
-        __qtablewidgetitem18 = QTableWidgetItem()
-        self.tableData.setItem(1, 5, __qtablewidgetitem18)
-        __qtablewidgetitem19 = QTableWidgetItem()
-        self.tableData.setItem(1, 6, __qtablewidgetitem19)
-        __qtablewidgetitem20 = QTableWidgetItem()
-        self.tableData.setItem(1, 7, __qtablewidgetitem20)
-        __qtablewidgetitem21 = QTableWidgetItem()
-        self.tableData.setItem(1, 8, __qtablewidgetitem21)
-        __qtablewidgetitem22 = QTableWidgetItem()
-        self.tableData.setItem(1, 9, __qtablewidgetitem22)
-        __qtablewidgetitem23 = QTableWidgetItem()
-        self.tableData.setItem(1, 10, __qtablewidgetitem23)
-        __qtablewidgetitem24 = QTableWidgetItem()
-        self.tableData.setItem(1, 11, __qtablewidgetitem24)
         self.tableData.setObjectName(u"tableData")
         self.tableData.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.tableData.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
@@ -281,12 +257,12 @@ class Ui_MainWindow(object):
             self.tableRes.setColumnCount(12)
         if (self.tableRes.rowCount() < 3):
             self.tableRes.setRowCount(3)
-        __qtablewidgetitem25 = QTableWidgetItem()
-        self.tableRes.setVerticalHeaderItem(0, __qtablewidgetitem25)
-        __qtablewidgetitem26 = QTableWidgetItem()
-        self.tableRes.setVerticalHeaderItem(1, __qtablewidgetitem26)
-        __qtablewidgetitem27 = QTableWidgetItem()
-        self.tableRes.setVerticalHeaderItem(2, __qtablewidgetitem27)
+        __qtablewidgetitem13 = QTableWidgetItem()
+        self.tableRes.setVerticalHeaderItem(0, __qtablewidgetitem13)
+        __qtablewidgetitem14 = QTableWidgetItem()
+        self.tableRes.setVerticalHeaderItem(1, __qtablewidgetitem14)
+        __qtablewidgetitem15 = QTableWidgetItem()
+        self.tableRes.setVerticalHeaderItem(2, __qtablewidgetitem15)
         self.tableRes.setObjectName(u"tableRes")
         self.tableRes.setColumnCount(12)
 
@@ -365,11 +341,6 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem11.setText(QCoreApplication.translate("MainWindow", u"9\u00aa pesagem, em g", None));
         ___qtablewidgetitem12 = self.tableData.verticalHeaderItem(12)
         ___qtablewidgetitem12.setText(QCoreApplication.translate("MainWindow", u"10\u00aa pesagem, em g", None));
-
-        __sortingEnabled = self.tableData.isSortingEnabled()
-        self.tableData.setSortingEnabled(False)
-        self.tableData.setSortingEnabled(__sortingEnabled)
-
         self.groupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"Resultados:", None))
         ___qtablewidgetitem13 = self.tableRes.verticalHeaderItem(0)
         ___qtablewidgetitem13.setText(QCoreApplication.translate("MainWindow", u"Volume medido, em mL", None));

@@ -11,35 +11,36 @@ import sys
 import math
 import statistics
 
-from PySide6 import QtSvg
-from PySide6.QtCore import (
-    QUrl,
-    Qt,
-    QPointF
-)
+from PySide6 import QtSvg, QtPrintSupport
 from PySide6.QtCore import __version__ as pyside_version
+
 from PySide6.QtGui import (
     QAction,
     QIcon,
-    QFont,
     QFontDatabase,
-    QFontInfo,
-    QPixmap,
-    QColor
+    QTextDocument,
+    QPageSize,
+    QTextCursor,
+    QFont,
+    QTextLength,
+    QBrush
 )
 from PySide6.QtWidgets import (
     QMainWindow,
     QApplication,
-    QToolBar,
     QTableWidget,
-    QTableWidgetItem
+    QTableWidgetItem,
+    QDialog
 )
-
+from PySide6.QtCore import Qt
 from platform import python_version
+
 from ui_main_vaca import Ui_MainWindow
 
 basedir = os.path.dirname(__file__)
-
+# pra "impressora" pdf
+textMargins = 12
+borderMargins = 10
 # gambi pro ícone no Windows...
 try:
     # Only exists on Windows.
@@ -78,7 +79,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         button_calc.triggered.connect(self.calcular)
         self.toolBar.addAction(button_calc)
         button_relat = QAction(QIcon(os.path.join(basedir,"relat_icon.svg")), "Relatório", self)
-        button_relat.triggered.connect(self.relat)
+        button_relat.triggered.connect(self.handlePrint)
         self.toolBar.addAction(button_relat)
         # populando drop list com o multiplicador pra apresentar o resultado em µL ou mL
         # e tipo de instrumento
@@ -116,10 +117,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             table_array.append(col)
             for j in range(self.tableData.rowCount()):
                 item = self.tableData.item(j, i)
-                if item is not None:
-                    if item.text().strip():
-                        text = item.text().replace(",", ".")
+                if item is not None and item.text().strip():
+                    text = item.text().replace(",", ".")
+                    try:
                         col.append(float(text))
+                        print("OK" + str(i) + ", " + str(j))
+                    except ValueError:
+                        print("." + text + "."  + str(i) + ", " + str(j))
+                        
         # extraindo as condições ambientais
         ta = self.tempAmb.value()
         pa = self.presAtm.value()
@@ -452,9 +457,49 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
 
 
-    def relat(self):
-        print("ainda não")
-            
+    def handlePrint(self):
+        dialog = QtPrintSupport.QPrintDialog()
+        if dialog.exec() == QDialog.Accepted:
+            self.handlePaintRequest(dialog.printer())
+
+#     def handlePreview(self):
+#         dialog = QtPrintSupport.QPrintPreviewDialog()
+#         dialog.paintRequested.connect(self.handlePaintRequest)
+# 
+#         dialog.exec_()
+
+    def handlePaintRequest(self, printer):
+        document = self.makeTableDocument()
+        document.print_(printer)
+    
+    def makeTableDocument(self):
+        document = QTextDocument()
+        cursor = QTextCursor(document)
+        rows = self.tableData.rowCount()
+        columns = self.tableData.columnCount()
+        table = cursor.insertTable(rows + 1, columns)
+        format = table.format()
+        format.setHeaderRowCount(1)
+        format.setWidth(QTextLength(QTextLength.PercentageLength, 100))
+        format.setCellSpacing(0)
+        format.setBorderBrush(QBrush(Qt.SolidPattern));
+        table.setFormat(format)
+        format = cursor.blockCharFormat()
+        format.setFontWeight(QFont.Bold)
+        for column in range(columns):
+            cursor.setCharFormat(format)
+            cursor.insertText(str(column + 1))
+            cursor.movePosition(QTextCursor.NextCell)
+        for row in range(rows):
+            for column in range(columns):
+                item = self.tableData.item(row, column)
+                if item is not None  and item.text().strip():
+                    text = item.text()
+                    cursor.insertText(text)
+                else:
+                    cursor.insertText("-")
+                cursor.movePosition(QTextCursor.NextCell)
+        return document
 
         
 app = QApplication.instance()
