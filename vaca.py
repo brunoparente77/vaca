@@ -78,6 +78,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         button_calc = QAction(QIcon(os.path.join(basedir,"calc_icon.svg")), "Calcular", self)
         button_calc.triggered.connect(self.calcular)
         self.toolBar.addAction(button_calc)
+        button_clear = QAction(QIcon(os.path.join(basedir,"clear_icon.svg")), "Limpar", self)
+        button_clear.triggered.connect(self.clear_tables)
+        self.toolBar.addAction(button_clear)
         button_relat = QAction(QIcon(os.path.join(basedir,"relat_icon.svg")), "Relatório", self)
         button_relat.triggered.connect(self.handlePrint)
         self.toolBar.addAction(button_relat)
@@ -107,7 +110,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.tableData.setVerticalHeaderItem(1, QTableWidgetItem("Volume ensaiado, em µL"))
             self.tableRes.setVerticalHeaderItem(0, QTableWidgetItem("Volume medido, em µL"))
 
+    def clear_tables(self):
+        self.tableData.clearContents() 
+        self.tableRes.clearContents()
+
     def calcular(self):
+        # limpando a tabela de resultados
+        self.tableRes.clearContents()
         # resgatando qual multiplicador usar para calcular em mL ou µL
         mult = self.instKind.currentData()[0]
         # extarindo o array
@@ -121,7 +130,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     text = item.text().replace(",", ".")
                     try:
                         col.append(float(text))
-                        print("OK" + str(i) + ", " + str(j))
                     except ValueError:
                         print("." + text + "."  + str(i) + ", " + str(j))
                         
