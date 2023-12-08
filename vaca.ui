@@ -56,7 +56,11 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="instId"/>
+           <widget class="QLineEdit" name="instId">
+            <property name="text">
+             <string>Meu equipamento</string>
+            </property>
+           </widget>
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_29">
@@ -67,6 +71,20 @@
           </item>
           <item row="1" column="1">
            <widget class="QComboBox" name="instKind"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Data do ensaio:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QDateEdit" name="dateEdit">
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -85,7 +103,11 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="balId"/>
+           <widget class="QLineEdit" name="balId">
+            <property name="text">
+             <string>Minha balança</string>
+            </property>
+           </widget>
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_21">
@@ -95,7 +117,11 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLineEdit" name="termId"/>
+           <widget class="QLineEdit" name="termId">
+            <property name="text">
+             <string>Meu termômetro</string>
+            </property>
+           </widget>
           </item>
           <item row="3" column="0">
            <widget class="QLabel" name="label_22">
@@ -105,7 +131,11 @@
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="QLineEdit" name="barId"/>
+           <widget class="QLineEdit" name="barId">
+            <property name="text">
+             <string>Meu barômetro</string>
+            </property>
+           </widget>
           </item>
           <item row="4" column="0">
            <widget class="QLabel" name="label_23">
@@ -115,10 +145,18 @@
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="QLineEdit" name="higId"/>
+           <widget class="QLineEdit" name="higId">
+            <property name="text">
+             <string>Meu higrômetro</string>
+            </property>
+           </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QLineEdit" name="lineEdit"/>
+           <widget class="QLineEdit" name="term2Id">
+            <property name="text">
+             <string>Meu outro termômetro</string>
+            </property>
+           </widget>
           </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label">

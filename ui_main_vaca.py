@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'vacaBFEbcL.ui'
+## Form generated from reading UI file 'vacauemoCr.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.1
 ##
@@ -15,11 +15,12 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractScrollArea, QApplication, QComboBox, QDoubleSpinBox,
-    QFormLayout, QGridLayout, QGroupBox, QHBoxLayout,
-    QHeaderView, QLabel, QLineEdit, QMainWindow,
-    QSizePolicy, QSpacerItem, QStatusBar, QTableWidget,
-    QTableWidgetItem, QToolBar, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractScrollArea, QApplication, QComboBox, QDateEdit,
+    QDoubleSpinBox, QFormLayout, QGridLayout, QGroupBox,
+    QHBoxLayout, QHeaderView, QLabel, QLineEdit,
+    QMainWindow, QSizePolicy, QSpacerItem, QStatusBar,
+    QTableWidget, QTableWidgetItem, QToolBar, QVBoxLayout,
+    QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -61,6 +62,17 @@ class Ui_MainWindow(object):
         self.instKind.setObjectName(u"instKind")
 
         self.formLayout.setWidget(1, QFormLayout.FieldRole, self.instKind)
+
+        self.label_3 = QLabel(self.groupBox)
+        self.label_3.setObjectName(u"label_3")
+
+        self.formLayout.setWidget(2, QFormLayout.LabelRole, self.label_3)
+
+        self.dateEdit = QDateEdit(self.groupBox)
+        self.dateEdit.setObjectName(u"dateEdit")
+        self.dateEdit.setCalendarPopup(True)
+
+        self.formLayout.setWidget(2, QFormLayout.FieldRole, self.dateEdit)
 
 
         self.verticalLayout.addWidget(self.groupBox)
@@ -109,10 +121,10 @@ class Ui_MainWindow(object):
 
         self.formLayout_4.setWidget(4, QFormLayout.FieldRole, self.higId)
 
-        self.lineEdit = QLineEdit(self.groupBox_2)
-        self.lineEdit.setObjectName(u"lineEdit")
+        self.term2Id = QLineEdit(self.groupBox_2)
+        self.term2Id.setObjectName(u"term2Id")
 
-        self.formLayout_4.setWidget(2, QFormLayout.FieldRole, self.lineEdit)
+        self.formLayout_4.setWidget(2, QFormLayout.FieldRole, self.term2Id)
 
         self.label = QLabel(self.groupBox_2)
         self.label.setObjectName(u"label")
@@ -299,12 +311,19 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Identifica\u00e7\u00e3o do instrumento ensaiado:", None))
         self.label_28.setText(QCoreApplication.translate("MainWindow", u"Identifica\u00e7\u00e3o:", None))
+        self.instId.setText(QCoreApplication.translate("MainWindow", u"Meu equipamento", None))
         self.label_29.setText(QCoreApplication.translate("MainWindow", u"Tipo:", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Data do ensaio:", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"Identifica\u00e7\u00e3o dos instrumentos utilisados:", None))
         self.label_20.setText(QCoreApplication.translate("MainWindow", u"Balan\u00e7a:", None))
+        self.balId.setText(QCoreApplication.translate("MainWindow", u"Minha balan\u00e7a", None))
         self.label_21.setText(QCoreApplication.translate("MainWindow", u"Term\u00f4metro ambiente:", None))
+        self.termId.setText(QCoreApplication.translate("MainWindow", u"Meu term\u00f4metro", None))
         self.label_22.setText(QCoreApplication.translate("MainWindow", u"Bar\u00f4metro:", None))
+        self.barId.setText(QCoreApplication.translate("MainWindow", u"Meu bar\u00f4metro", None))
         self.label_23.setText(QCoreApplication.translate("MainWindow", u"Higr\u00f4metro:", None))
+        self.higId.setText(QCoreApplication.translate("MainWindow", u"Meu higr\u00f4metro", None))
+        self.term2Id.setText(QCoreApplication.translate("MainWindow", u"Meu outro term\u00f4metro", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Term\u00f4metro \u00e1gua:", None))
         self.groupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"Condi\u00e7\u00f5es ambientais:", None))
         self.presAtm.setSuffix(QCoreApplication.translate("MainWindow", u" hPa", None))

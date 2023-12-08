@@ -20,27 +20,27 @@ from PySide6.QtGui import (
     QFontDatabase,
     QTextDocument,
     QPageSize,
-    QTextCursor,
-    QFont,
-    QTextLength,
-    QBrush
+    QPageLayout,
+    QFont
 )
 from PySide6.QtWidgets import (
     QMainWindow,
     QApplication,
     QTableWidget,
     QTableWidgetItem,
-    QDialog
+    QFileDialog
 )
-from PySide6.QtCore import Qt
+from PySide6.QtCore import (
+    QDate,
+    QMargins,
+    QSizeF
+)
 from platform import python_version
 
 from ui_main_vaca import Ui_MainWindow
 
 basedir = os.path.dirname(__file__)
-# pra "impressora" pdf
-textMargins = 12
-borderMargins = 10
+
 # gambi pro ícone no Windows...
 try:
     # Only exists on Windows.
@@ -70,10 +70,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         #Adicionando as fontes Cantarell
-        QFontDatabase.addApplicationFont(os.path.join(basedir,"Cantarell-Regular.ttf"))
-        QFontDatabase.addApplicationFont(os.path.join(basedir,"Cantarell-Bold.ttf"))
-        QFontDatabase.addApplicationFont(os.path.join(basedir,"Cantarell-BoldItalic.ttf"))
-        QFontDatabase.addApplicationFont(os.path.join(basedir,"Cantarell-Italic.ttf"))
+        QFontDatabase.addApplicationFont(os.path.join(basedir, "Cantarell-Regular.ttf"))
+        QFontDatabase.addApplicationFont(os.path.join(basedir, "Cantarell-Bold.ttf"))
+        QFontDatabase.addApplicationFont(os.path.join(basedir, "Cantarell-BoldItalic.ttf"))
+        QFontDatabase.addApplicationFont(os.path.join(basedir, "Cantarell-Italic.ttf"))
         # barra de botões
         button_calc = QAction(QIcon(os.path.join(basedir,"calc_icon.svg")), "Calcular", self)
         button_calc.triggered.connect(self.calcular)
@@ -98,6 +98,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.instKind.addItem("Pipeta volumétrica", (1, "pv"))
         # conecta o combo pra mudar as unidades entre µL e mL
         self.instKind.currentIndexChanged.connect(self.muda_unidade)
+        # seta a data de hoje no caledário do dia do ensaio, pra facilitar a vid do usuário
+        self.dateEdit.setDate(QDate.currentDate())
     
     def muda_unidade(self):
         # troca a unidade da interface de acordo com a unidade de volume do instrumento
@@ -466,47 +468,92 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 
     def handlePrint(self):
-        dialog = QtPrintSupport.QPrintDialog()
-        if dialog.exec() == QDialog.Accepted:
-            self.handlePaintRequest(dialog.printer())
-
-#     def handlePreview(self):
-#         dialog = QtPrintSupport.QPrintPreviewDialog()
-#         dialog.paintRequested.connect(self.handlePaintRequest)
-# 
-#         dialog.exec_()
-
-    def handlePaintRequest(self, printer):
-        document = self.makeTableDocument()
-        document.print_(printer)
+        filename, _ = QFileDialog.getSaveFileName(self, 'Salvar arquivo', '', ".pdf (*.pdf)")
+        if not filename[-4:] == ".pdf":
+            filename = filename + ".pdf"
+        if filename:
+            printer = QtPrintSupport.QPrinter(QtPrintSupport.QPrinter.HighResolution)
+            printer.setOutputFormat(QtPrintSupport.QPrinter.PdfFormat)
+            printer.setPageSize(QPageSize.A4)
+            printer.setPageOrientation(QPageLayout.Landscape)
+            printer.setPageMargins(QMargins(0, 0, 0, 0))
+            printer.setOutputFileName(filename)
+            document = self.makeTableDocument()
+            document.print_(printer)
     
     def makeTableDocument(self):
         document = QTextDocument()
-        cursor = QTextCursor(document)
-        rows = self.tableData.rowCount()
-        columns = self.tableData.columnCount()
-        table = cursor.insertTable(rows + 1, columns)
-        format = table.format()
-        format.setHeaderRowCount(1)
-        format.setWidth(QTextLength(QTextLength.PercentageLength, 100))
-        format.setCellSpacing(0)
-        format.setBorderBrush(QBrush(Qt.SolidPattern));
-        table.setFormat(format)
-        format = cursor.blockCharFormat()
-        format.setFontWeight(QFont.Bold)
-        for column in range(columns):
-            cursor.setCharFormat(format)
-            cursor.insertText(str(column + 1))
-            cursor.movePosition(QTextCursor.NextCell)
-        for row in range(rows):
-            for column in range(columns):
-                item = self.tableData.item(row, column)
+        document.setPageSize(QSizeF(842, 596))
+        document.setDocumentMargin(10)
+        document.setDefaultFont(QFont("Cantarell", 7))
+        html = """<html>
+        <head>
+        <title>Relatório de ensaio</title>
+        <meta name="generator" content="V.A.CA. 1.0"/>
+        </head>
+        <body dir="ltr">
+        <h1 align="center">Relatório de Ensaio</h1>
+        """
+        html += '<p><b>Identificação do equipamento: </b><big>' + self.instId.text() + '</big></p>'
+        html += '<table width="100%"><tr><td width="50%">'
+        html += '<p><b>Identificação dos instrumentos de medida utilizados:</b><br>'
+        html += 'Balança: ' + self.balId.text() + '<br>'
+        html += 'Termômetro (temp. ambiente): ' + self.termId.text() + '<br>'
+        html += 'Termômetro (temp. da água): ' + self.term2Id.text() + '<br>'
+        html += 'Barômetro: ' + self.barId.text() + '<br>'
+        html += 'Higrômetro: ' + self.higId.text() + '</p>'
+        html += '</td><td width="50%"></td>'
+        html += '<p><b>Condições ambientais:</b><br>'
+        html += 'Data de realização do ensaio: ' + self.dateEdit.date().toString("dd/MM/yyyy") + '<br>'
+        html += 'Temperatura ambiente: ' + str(self.tempAmb.value()) + '°C <br>'
+        html += 'Pressão atmosférica: ' + str(self.presAtm.value()) + ' hPa <br>'
+        html += 'Umidade relativa do ar: ' + str(self.umidRel.value()) + '% </p></td></tr></table>'
+        html += '<p><b>Dados das medidas de massa:</b></p>'
+        html += '<table border="1" cellpadding="2" width="100%" style="border-collapse: collapse"><thead>'
+        html += '<tr>'
+        for c in range(self.tableData.columnCount() + 1):
+            if c == 0:
+                html += '<th bgcolor="#E5E4E2"></th>'
+            else:
+                html += '<th bgcolor="#E5E4E2">{}</th>'.format(c)
+        html += '</tr></thead>'
+        html += '<tbody>'
+        for r in range(self.tableData.rowCount()):
+            html += '<tr>'
+            html += '<td bgcolor="#E5E4E2">{}</td>'.format(self.tableData.verticalHeaderItem(r).text())
+            for c in range(self.tableData.columnCount()):
+                item = self.tableData.item(r, c)
                 if item is not None  and item.text().strip():
                     text = item.text()
-                    cursor.insertText(text)
+                    html += '<td>{}</td>'.format(text)
                 else:
-                    cursor.insertText("-")
-                cursor.movePosition(QTextCursor.NextCell)
+                    html += '<td>{}</td>'.format("-")
+            html += '</tr>'
+        html += '</tbody></table>'
+        html += '<p><b>Resultados:</b></p>'        
+        html += '<table border="1" cellpadding="2" width="100%" style="border-collapse: collapse"><thead>'
+        html += '<tr>'
+        for c in range(self.tableRes.columnCount() + 1):
+            if c == 0:
+                html += '<th bgcolor="#E5E4E2"></th>'
+            else:
+                html += '<th bgcolor="#E5E4E2">{}</th>'.format(c)
+        html += '</tr></thead>'
+        html += '<tbody>'
+        for r in range(self.tableRes.rowCount()):
+            html += '<tr>'
+            html += '<td bgcolor="#E5E4E2">{}</td>'.format(self.tableRes.verticalHeaderItem(r).text())
+            for c in range(self.tableRes.columnCount()):
+                item = self.tableRes.item(r, c)
+                if item is not None  and item.text().strip():
+                    text = item.text()
+                    html += '<td>{}</td>'.format(text)
+                else:
+                    html += '<td>{}</td>'.format("-")
+            html += '</tr>'
+        html += '</tbody></table></body></html>'
+#         html += '</tbody></table><div style="page-break-before:always"><p>Apenas um teste</p></div></body></html>'
+        document.setHtml(html)
         return document
 
         
