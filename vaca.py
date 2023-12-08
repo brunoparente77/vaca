@@ -11,6 +11,7 @@ import sys
 import math
 import statistics
 
+from datetime import datetime
 from PySide6 import QtSvg, QtPrintSupport
 from PySide6.QtCore import __version__ as pyside_version
 
@@ -98,8 +99,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.instKind.addItem("Pipeta volumétrica", (1, "pv"))
         # conecta o combo pra mudar as unidades entre µL e mL
         self.instKind.currentIndexChanged.connect(self.muda_unidade)
-        # seta a data de hoje no caledário do dia do ensaio, pra facilitar a vid do usuário
+        # seta a data de hoje no caledário do dia do ensaio, pra facilitar a vida do usuário
         self.dateEdit.setDate(QDate.currentDate())
+        # alinhando o cabeçalho das linhas nas duas tabelas
+        self.tableData.verticalHeader().setFixedWidth(200)
+        self.tableRes.verticalHeader().setFixedWidth(200)
     
     def muda_unidade(self):
         # troca a unidade da interface de acordo com a unidade de volume do instrumento
@@ -513,7 +517,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         html += '<tr>'
         for c in range(self.tableData.columnCount() + 1):
             if c == 0:
-                html += '<th bgcolor="#E5E4E2"></th>'
+                html += '<th width="16%" bgcolor="#E5E4E2"></th>'
             else:
                 html += '<th bgcolor="#E5E4E2">{}</th>'.format(c)
         html += '</tr></thead>'
@@ -535,7 +539,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         html += '<tr>'
         for c in range(self.tableRes.columnCount() + 1):
             if c == 0:
-                html += '<th bgcolor="#E5E4E2"></th>'
+                html += '<th width="16%" bgcolor="#E5E4E2"></th>'
             else:
                 html += '<th bgcolor="#E5E4E2">{}</th>'.format(c)
         html += '</tr></thead>'
@@ -551,7 +555,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 else:
                     html += '<td>{}</td>'.format("-")
             html += '</tr>'
-        html += '</tbody></table></body></html>'
+        html += '</tbody></table>'
+        html += '<p align="right"><small>Impresso por V.A.Ca v. 1.0 em {}.</small></p></body></html>'.format(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
 #         html += '</tbody></table><div style="page-break-before:always"><p>Apenas um teste</p></div></body></html>'
         document.setHtml(html)
         return document
