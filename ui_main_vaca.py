@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'vacauemoCr.ui'
+## Form generated from reading UI file 'vacaoXSKkx.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.1
 ##
@@ -28,19 +28,26 @@ class Ui_MainWindow(object):
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(1024, 900)
         MainWindow.setMinimumSize(QSize(1024, 900))
-        MainWindow.setMaximumSize(QSize(2048, 900))
+        MainWindow.setMaximumSize(QSize(4096, 3600))
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.widget_2 = QWidget(self.centralwidget)
         self.widget_2.setObjectName(u"widget_2")
-        self.widget_2.setMinimumSize(QSize(380, 0))
-        self.widget_2.setMaximumSize(QSize(380, 16777215))
+        self.widget_2.setMinimumSize(QSize(400, 0))
+        self.widget_2.setMaximumSize(QSize(390, 16777215))
         self.verticalLayout = QVBoxLayout(self.widget_2)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.groupBox = QGroupBox(self.widget_2)
         self.groupBox.setObjectName(u"groupBox")
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
+        self.groupBox.setSizePolicy(sizePolicy)
+        self.groupBox.setMinimumSize(QSize(0, 175))
+        self.groupBox.setMaximumSize(QSize(16777215, 16777215))
         self.formLayout = QFormLayout(self.groupBox)
         self.formLayout.setObjectName(u"formLayout")
         self.label_28 = QLabel(self.groupBox)
@@ -66,19 +73,33 @@ class Ui_MainWindow(object):
         self.label_3 = QLabel(self.groupBox)
         self.label_3.setObjectName(u"label_3")
 
-        self.formLayout.setWidget(2, QFormLayout.LabelRole, self.label_3)
+        self.formLayout.setWidget(3, QFormLayout.LabelRole, self.label_3)
 
         self.dateEdit = QDateEdit(self.groupBox)
         self.dateEdit.setObjectName(u"dateEdit")
         self.dateEdit.setCalendarPopup(True)
 
-        self.formLayout.setWidget(2, QFormLayout.FieldRole, self.dateEdit)
+        self.formLayout.setWidget(3, QFormLayout.FieldRole, self.dateEdit)
+
+        self.label_4 = QLabel(self.groupBox)
+        self.label_4.setObjectName(u"label_4")
+
+        self.formLayout.setWidget(2, QFormLayout.LabelRole, self.label_4)
+
+        self.instMat = QComboBox(self.groupBox)
+        self.instMat.setObjectName(u"instMat")
+
+        self.formLayout.setWidget(2, QFormLayout.FieldRole, self.instMat)
 
 
         self.verticalLayout.addWidget(self.groupBox)
 
         self.groupBox_2 = QGroupBox(self.widget_2)
         self.groupBox_2.setObjectName(u"groupBox_2")
+        sizePolicy.setHeightForWidth(self.groupBox_2.sizePolicy().hasHeightForWidth())
+        self.groupBox_2.setSizePolicy(sizePolicy)
+        self.groupBox_2.setMinimumSize(QSize(0, 205))
+        self.groupBox_2.setMaximumSize(QSize(16777215, 16777215))
         self.formLayout_4 = QFormLayout(self.groupBox_2)
         self.formLayout_4.setObjectName(u"formLayout_4")
         self.label_20 = QLabel(self.groupBox_2)
@@ -136,6 +157,10 @@ class Ui_MainWindow(object):
 
         self.groupBox_3 = QGroupBox(self.widget_2)
         self.groupBox_3.setObjectName(u"groupBox_3")
+        sizePolicy.setHeightForWidth(self.groupBox_3.sizePolicy().hasHeightForWidth())
+        self.groupBox_3.setSizePolicy(sizePolicy)
+        self.groupBox_3.setMinimumSize(QSize(0, 155))
+        self.groupBox_3.setMaximumSize(QSize(16777215, 16777215))
         self.gridLayout_2 = QGridLayout(self.groupBox_3)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.presAtm = QDoubleSpinBox(self.groupBox_3)
@@ -205,11 +230,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.groupBox_5 = QGroupBox(self.widget)
         self.groupBox_5.setObjectName(u"groupBox_5")
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.groupBox_5.sizePolicy().hasHeightForWidth())
-        self.groupBox_5.setSizePolicy(sizePolicy)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.groupBox_5.sizePolicy().hasHeightForWidth())
+        self.groupBox_5.setSizePolicy(sizePolicy1)
         self.groupBox_5.setMinimumSize(QSize(0, 550))
         self.verticalLayout_3 = QVBoxLayout(self.groupBox_5)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
@@ -260,8 +285,8 @@ class Ui_MainWindow(object):
 
         self.groupBox_4 = QGroupBox(self.widget)
         self.groupBox_4.setObjectName(u"groupBox_4")
-        sizePolicy.setHeightForWidth(self.groupBox_4.sizePolicy().hasHeightForWidth())
-        self.groupBox_4.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.groupBox_4.sizePolicy().hasHeightForWidth())
+        self.groupBox_4.setSizePolicy(sizePolicy1)
         self.verticalLayout_4 = QVBoxLayout(self.groupBox_4)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.tableRes = QTableWidget(self.groupBox_4)
@@ -296,8 +321,8 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.toolBar = QToolBar(MainWindow)
         self.toolBar.setObjectName(u"toolBar")
-        sizePolicy.setHeightForWidth(self.toolBar.sizePolicy().hasHeightForWidth())
-        self.toolBar.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.toolBar.sizePolicy().hasHeightForWidth())
+        self.toolBar.setSizePolicy(sizePolicy1)
         self.toolBar.setMovable(False)
         self.toolBar.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
         MainWindow.addToolBar(Qt.TopToolBarArea, self.toolBar)
@@ -314,6 +339,7 @@ class Ui_MainWindow(object):
         self.instId.setText(QCoreApplication.translate("MainWindow", u"Meu equipamento", None))
         self.label_29.setText(QCoreApplication.translate("MainWindow", u"Tipo:", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Data do ensaio:", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Material:", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"Identifica\u00e7\u00e3o dos instrumentos utilisados:", None))
         self.label_20.setText(QCoreApplication.translate("MainWindow", u"Balan\u00e7a:", None))
         self.balId.setText(QCoreApplication.translate("MainWindow", u"Minha balan\u00e7a", None))

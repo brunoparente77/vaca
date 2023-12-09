@@ -97,6 +97,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.instKind.addItem("Micropipeta multicanal", (1000, "mm"))
         self.instKind.addItem("Pipeta graduada", (1, "pg"))
         self.instKind.addItem("Pipeta volumétrica", (1, "pv"))
+        # populando drop list com o coeficiente de expansão térmica de acordo com o material
+        self.instMat.addItem("Vidro borossilicato 3.3", 9.9e-6)
+        self.instMat.addItem("Vidro borossilicato 5.0", 1.5e-5)
+        self.instMat.addItem("Vidro soda-lime", 2.7e-5)
+        self.instMat.addItem("Polipropileno (PP)", 2.4e-4)
+        self.instMat.addItem("Poliestireno (PS)", 4.5e-4)
+        self.instMat.addItem("Policarbonato (PC)", 2.1e-4)
+        self.instMat.addItem("Perfluoroalcoxi alcano (PFA)", 3.9e-4)
+        self.instMat.addItem("Polimetilpenteno (PMP)", 3.6e-4)
         # conecta o combo pra mudar as unidades entre µL e mL
         self.instKind.currentIndexChanged.connect(self.muda_unidade)
         # seta a data de hoje no caledário do dia do ensaio, pra facilitar a vida do usuário
@@ -125,6 +134,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tableRes.clearContents()
         # resgatando qual multiplicador usar para calcular em mL ou µL
         mult = self.instKind.currentData()[0]
+        # coeficiente de expansão térmica do material
+        coef_term = self.instMat.currentData()
         # extarindo o array
         table_array = []
         for i in range(self.tableData.columnCount()):
@@ -142,7 +153,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # extraindo as condições ambientais
         ta = self.tempAmb.value()
         pa = self.presAtm.value()
-        ua = self.umidRel.value()
+        ua = self.umidRel.value()        
         # transformando massa em volume
         vol_array = []
         for d in table_array:
@@ -151,13 +162,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 # cálculo de z
                 z = calc_z(d[2], ta, ua, pa)
                 for i in d:
-                    vol0.append(i * z * mult)
+                    vol0.append(i * z * (1 - coef_term * (d[2] - 20)) * mult)
                 vol = [y - x for x, y in zip(vol0, vol0[1:])]
                 # restaurando o volume nominal e ensaiado
                 vol[0] = d[0]
                 vol[1] = d[1]
                 # Reinnserindo o primeiro dado que o "zip" come no processo
-                vol[2] = d[3] * z * mult
+                vol[2] = d[3] * z * (1 - coef_term * (d[2] - 20)) * mult
                 vol_array.append(vol)
         # calculando o resultado e salvando em uma nova matriz
         res_array = []
