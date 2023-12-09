@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>1024</width>
-    <height>900</height>
+    <height>940</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>1024</width>
-    <height>900</height>
+    <height>720</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -225,7 +225,7 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>155</height>
+           <height>205</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -235,7 +235,7 @@
           </size>
          </property>
          <property name="title">
-          <string>Condições ambientais:</string>
+          <string>Parâmetros ambientais:</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="1" column="1">
@@ -257,10 +257,36 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_25">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_27">
             <property name="text">
-             <string>Umidade relativa:</string>
+             <string>Temperatura ambiente:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QDoubleSpinBox" name="umidRel">
+            <property name="suffix">
+             <string>%</string>
+            </property>
+            <property name="minimum">
+             <double>20.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>80.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.500000000000000</double>
+            </property>
+            <property name="value">
+             <double>45.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_24">
+            <property name="text">
+             <string>Pressão atmosférica:</string>
             </property>
            </widget>
           </item>
@@ -283,36 +309,68 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_27">
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_25">
             <property name="text">
-             <string>Temperatura ambiente:</string>
+             <string>Umidade relativa:</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_24">
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_5">
             <property name="text">
-             <string>Pressão atmosférica:</string>
+             <string>Perda por evaporação:</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
-           <widget class="QDoubleSpinBox" name="umidRel">
+          <item row="3" column="1">
+           <widget class="QDoubleSpinBox" name="mEvap">
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
             <property name="suffix">
-             <string>%</string>
+             <string> g</string>
             </property>
-            <property name="minimum">
-             <double>20.000000000000000</double>
+            <property name="decimals">
+             <number>5</number>
             </property>
             <property name="maximum">
-             <double>80.000000000000000</double>
+             <double>10.000000000000000</double>
             </property>
             <property name="singleStep">
-             <double>0.500000000000000</double>
+             <double>0.010000000000000</double>
+            </property>
+            <property name="stepType">
+             <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Dens. dos pesos de ref.:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QDoubleSpinBox" name="densPesos">
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
+            <property name="suffix">
+             <string> g·mL⁻¹</string>
+            </property>
+            <property name="decimals">
+             <number>2</number>
+            </property>
+            <property name="minimum">
+             <double>1.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>20.000000000000000</double>
             </property>
             <property name="value">
-             <double>45.000000000000000</double>
+             <double>8.000000000000000</double>
             </property>
            </widget>
           </item>
@@ -371,13 +429,20 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>550</height>
+           <height>590</height>
           </size>
          </property>
          <property name="title">
           <string>Dados do ensaio:</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QCheckBox" name="checkTara">
+            <property name="text">
+             <string>Balança tarada entre as medidas</string>
+            </property>
+           </widget>
+          </item>
           <item>
            <widget class="QTableWidget" name="tableData">
             <property name="verticalScrollBarPolicy">
@@ -393,7 +458,7 @@
              <bool>false</bool>
             </property>
             <property name="rowCount">
-             <number>13</number>
+             <number>14</number>
             </property>
             <property name="columnCount">
              <number>12</number>
@@ -414,6 +479,11 @@
             <row>
              <property name="text">
               <string>Temperatura da água, em °C</string>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string>Massa do recipiente, em g</string>
              </property>
             </row>
             <row>

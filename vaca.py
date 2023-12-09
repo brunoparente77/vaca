@@ -53,16 +53,18 @@ except ImportError:
     pass
 
 
-def calc_z(tw, ta, ua, pa):
+def calc_ro_water(tw, ta, ua, pa):
     # densidade da água segundo "Tanaka M. et al., Recommended table
     # for the density of water between 0 °C and 40 °C based on
     # recent experimental reports,  Metrologia,  2001, 38, 301-309  
     ro_w = 0.99997495 * (1 - (tw - 3.983035)**2 * (tw + 301.797)/(522528.9 * (tw + 69.34881)))
+    return ro_w
+
+def calc_ro_air(ta, ua, pa):
     # Densidade do ar de acordo com a ISO 8655-6:2022
     ro_a = (1 / 1000) * (0.34848 * pa - 0.009 * ua * math.e**(0.061 * ta))/(ta + 273.15)
     # cálculo de z de acordo com a ISO 8655-6:2022
-    z = 1 / (ro_w - ro_a) * (1 - ro_a / 8)
-    return z
+    return ro_a
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -88,6 +90,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # populando drop list com o multiplicador pra apresentar o resultado em µL ou mL
         # e tipo de instrumento
         self.instKind.addItem("Balão volumétrico", (1, "bv"))
+        self.instKind.addItem("Balão volumétrico (boca larga)", (1, "bvl"))
         self.instKind.addItem("Bureta", (1, "b"))
         self.instKind.addItem('Bureta "digital" manual', (1, "bdm"))
         self.instKind.addItem('Bureta "digital" motorizada', (1, "bda"))
@@ -111,8 +114,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # seta a data de hoje no caledário do dia do ensaio, pra facilitar a vida do usuário
         self.dateEdit.setDate(QDate.currentDate())
         # alinhando o cabeçalho das linhas nas duas tabelas
-        self.tableData.verticalHeader().setFixedWidth(200)
-        self.tableRes.verticalHeader().setFixedWidth(200)
+        self.tableData.verticalHeader().setFixedWidth(210)
+        self.tableRes.verticalHeader().setFixedWidth(210)
     
     def muda_unidade(self):
         # troca a unidade da interface de acordo com a unidade de volume do instrumento
@@ -136,7 +139,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         mult = self.instKind.currentData()[0]
         # coeficiente de expansão térmica do material
         coef_term = self.instMat.currentData()
-        # extarindo o array
+        # extarindo o array dos dados de massa
         table_array = []
         for i in range(self.tableData.columnCount()):
             col = []
@@ -148,29 +151,42 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     try:
                         col.append(float(text))
                     except ValueError:
-                        print("." + text + "."  + str(i) + ", " + str(j))
-                        
+                        print("." + text + "."  + str(i) + ", " + str(j))                        
         # extraindo as condições ambientais
         ta = self.tempAmb.value()
         pa = self.presAtm.value()
-        ua = self.umidRel.value()        
+        ua = self.umidRel.value()
+        m_evap = self.mEvap.value()
+        ro_b = self.densPesos.value()
         # transformando massa em volume
-        vol_array = []
-        for d in table_array:
-            if len(d) != 0:
-                vol0 = []
-                # cálculo de z
-                z = calc_z(d[2], ta, ua, pa)
-                for i in d:
-                    vol0.append(i * z * (1 - coef_term * (d[2] - 20)) * mult)
-                vol = [y - x for x, y in zip(vol0, vol0[1:])]
-                # restaurando o volume nominal e ensaiado
-                vol[0] = d[0]
-                vol[1] = d[1]
-                # Reinnserindo o primeiro dado que o "zip" come no processo
-                vol[2] = d[3] * z * (1 - coef_term * (d[2] - 20)) * mult
-                vol_array.append(vol)
-        # calculando o resultado e salvando em uma nova matriz
+        # um IF, pois há pequenas diferenças entre a ISO 4787 e a ISO 8655
+        if self.instKind.currentData()[0] in ["bv", "bvl", "b", "pv", "pg"]:
+            print("nada ainda")
+        else:
+            vol_array = []
+            for column in table_array:
+                print(column)
+                if len(column) != 0:
+                    tw = column[2]
+                    vol = []
+                    for i, ml in enumerate(column):
+                        ro_w = calc_ro_water(tw, ta, ua, pa)
+                        ro_a = calc_ro_air( ta, ua, pa)
+                        if self.checkTara.isChecked():
+                            v = (ml + m_evap) * 1/(ro_w + ro_a) * (1 - ro_a / ro_b) * (1 - coef_term * (tw - 20))
+                            vol.append(v * mult)
+                        else:
+                            v = (ml - column[i - 1] + m_evap) * 1/(ro_w + ro_a) * (1 - ro_a / ro_b) * (1 - coef_term * (tw - 20))
+                            vol.append(v * mult)
+                    # restaurando o volume nominal, ensaiado
+                    vol[0] = column[0]
+                    vol[1] = column[1]
+                    # removendo temperatura e massa do recipiente
+                    vol.pop(2)
+                    vol.pop(2)
+                    # inserindo a coluna no novo array de volumes
+                    vol_array.append(vol)
+        # calculando os resultados
         res_array = []
         for i in vol_array:
             res = []
@@ -185,301 +201,307 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             res.append(e_ale)
             res_array.append(res)
         # atribuindo os resultados à tabela tableRes da interface
-        for i, j in enumerate(res_array):
-            for x, y in enumerate(j):
-                self.tableRes.setItem(x, i, QTableWidgetItem("%.2f" % y))
-        # Não é legal o usuário poder editar os resultos. Bloqueando!
-        self.tableRes.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        # Calculando os limites, de acordo com a norma ISO do instrumento
-        match self.instKind.currentData()[1]:
-            case "msa":
-                # comparando o erro sistemático com o limite da norma
-                for column in range(self.tableRes.columnCount()):
-                    _item = self.tableRes.item(1, column)
-                    if _item:
-                        v_nom =  float(self.tableData.item(0,column).text())
-                        v_s = float(self.tableData.item(1,column).text())
-                        # verificando qual o limite dos erros na ISO 8655-2:2022
-                        if v_nom > 5000:
-                            e_vnom = 0.6
-                        elif v_nom > 50:
-                            e_vnom = 0.8
-                        elif v_nom > 10:
-                            e_vnom = 1.0
-                        elif v_nom > 5:
-                            e_vnom = 1.2
-                        else:
-                            e_vnom = 2.5                    
-                        limite = v_nom / v_s * e_vnom
-                        if abs(float(_item.text())) > limite:
-                            conf = False
-                        else:
-                            conf = True
-                        if not conf:
-                            _item.setToolTip("Deu ruim de acordo com a norma ISO 8855-2:2022.")
-                            _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
-                # comparando o erro aleatório com o limite da norma
-                for column in range(self.tableRes.columnCount()):
-                    _item = self.tableRes.item(2, column)
-                    if _item:
-                        v_nom =  float(self.tableData.item(0,column).text())
-                        v_s = float(self.tableData.item(1,column).text())
-                        # verificando qual o limite dos erros na ISO 8655-2:2022
-                        if v_nom > 50:
-                            e_vnom = 0.3
-                        elif v_nom > 10:
-                            e_vnom = 0.5
-                        elif v_nom > 5:
-                            e_vnom = 0.8
-                        elif v_nom > 3:
-                            e_vnom = 1.5
-                        else:
-                            e_vnom = 2.0
-                        limite = v_nom / v_s * e_vnom
-                        if abs(float(_item.text())) > limite:
-                            conf = False
-                        else:
-                            conf = True
-                        if not conf:
-                            _item.setToolTip("Deu ruim de acordo com a norma ISO 8655-2:2022.")
-                            _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
-            case "msd2":
-                for column in range(self.tableRes.columnCount()):
-                    _item = self.tableRes.item(1, column)               
-                    if _item:
-                        v_nom =  float(self.tableData.item(0,column).text())
-                        v_s = float(self.tableData.item(1,column).text())
-                        # verificando qual o limite dos erros na ISO 8655-2:2022
-                        if v_nom > 100:
-                            e_vnom = 1.2
-                        elif v_nom > 20:
-                            e_vnom = 1.4
-                        elif v_nom > 5:
-                            e_vnom = 2.0
-                        else:
-                            e_vnom = 2.5
-                        limite = v_nom / v_s * e_vnom
-                        if abs(float(_item.text())) > limite:
-                            conf = False
-                        else:
-                            conf = True
-                        if not conf:
-                            _item.setToolTip("Deu ruim de acordo com a norma ISO 8855-2:2022.")
-                            _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
-                # comparando o erro aleatório com o limite da norma
-                for column in range(self.tableRes.columnCount()):
-                    _item = self.tableRes.item(2, column)
-                    if _item:
-                        v_nom =  float(self.tableData.item(0,column).text())
-                        v_s = float(self.tableData.item(1,column).text())
-                        # verificando qual o limite dos erros na ISO 8655-2:2022
-                        if v_nom > 100:
-                            e_vnom = 0.4
-                        elif v_nom > 20:
-                            e_vnom = 0.6
-                        elif v_nom > 10:
-                            e_vnom = 0.8
-                        elif v_nom > 5:
-                            e_vnom = 1.0
-                        else:
-                            e_vnom = 1.5
-                        limite = v_nom / v_s * e_vnom
-                        if abs(float(_item.text())) > limite:
-                            conf = False
-                        else:
-                            conf = True
-                        if not conf:
-                            _item.setToolTip("Deu ruim de acordo com a norma ISO 8855-2:2022.")
-                            _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
-            case "mm":
-                # comparando o erro sistemático com o limite da norma
-                for column in range(self.tableRes.columnCount()):                
-                    _item = self.tableRes.item(1, column)
-                    if _item:
-                        v_nom =  float(self.tableData.item(0,column).text())
-                        v_s = float(self.tableData.item(1,column).text())
-                        # verificando qual o limite dos erros na ISO 8655-2:2022
-                        if v_nom > 50:
-                            e_vnom = 1.6
-                        elif v_nom > 10:
-                            e_vnom = 2.0
-                        elif v_nom > 5:
-                            e_vnom = 2.4
-                        elif v_nom > 2:
-                            e_vnom = 5.0
-                        else:
-                            e_vnom = 8.0
-                        limite = v_nom / v_s * e_vnom
-                        if abs(float(_item.text())) > limite:
-                            conf = False
-                        else:
-                            conf = True
-                        if not conf:
-                            _item.setToolTip("Deu ruim de acordo com a norma ISO 8855-2:2022.")
-                            _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
-                # comparando o erro aleatório com o limite da norma
-                for column in range(self.tableRes.columnCount()):
-                    _item = self.tableRes.item(2, column)
-                    if _item:
-                        v_nom =  float(self.tableData.item(0,column).text())
-                        v_s = float(self.tableData.item(1,column).text())
-                        # verificando qual o limite dos erros na ISO 8655-2:2022
-                        if v_nom > 50:
-                            e_vnom = 0.6
-                        elif v_nom > 20:
-                            e_vnom = 0.8
-                        elif v_nom > 10:
-                            e_vnom = 1.0
-                        elif v_nom > 5:
-                            e_vnom = 1.6
-                        elif v_nom > 2:
-                            e_vnom = 3.0
-                        else:
-                            e_vnom = 8.0
-                        limite = v_nom / v_s * e_vnom
-                        if abs(float(_item.text())) > limite:
-                            conf = False
-                        else:
-                            conf = True
-                        if not conf:
-                            _item.setToolTip("Deu ruim de acordo com a norma ISO 8655-2:2022.")
-                            _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
-            case "bda":
-                # comparando o erro sistemático com o limite da norma
-                for column in range(self.tableRes.columnCount()):
-                    item = self.tableRes.item(1, column)
-                    if _item:
-                        v_nom =  float(self.tableData.item(0, column).text())
-                        v_s = float(self.tableData.item(1, column).text())
-                        # verificando qual o limite dos erros na ISO 8655-3:2022
-                        if v_nom > 5:
-                            e_vnom = 0.2
-                        elif v_nom > 2:
-                            e_vnom = 0.3
-                        elif v_nom > 1:
-                            e_vnom = 0.5
-                        else:
-                            e_vnom = 0.6
-                        limite = v_nom / v_s * e_vnom
-                        if abs(float(_item.text())) > limite:
-                            conf = False
-                        else:
-                            conf = True
-                        if not conf:
-                            _item.setToolTip("Deu ruim de acordo com a norma ISO 8855-3:2022.")
-                            _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
-                # comparando o erro aleatório com o limite da norma
-                for column in range(self.tableRes.columnCount()):
-                    _item = self.tableRes.item(2, column)
-                    if _item:
-                        v_nom =  float(self.tableData.item(0, column).text())
-                        v_s = float(self.tableData.item(1, column).text())
-                        # verificando qual o limite dos erros na ISO 8655-3:2022
-                        if v_nom > 50:
-                            e_vnom = 0.03
-                        elif v_nom > 25:
-                            e_vnom = 0.05
-                        elif v_nom > 5:
-                            e_vnom = 0.07
-                        else:
+        # novo IF, pois a 47
+        if self.instKind.currentData()[0] in ["bv", "bvl", "b", "pv", "pg"]:
+            # ISO 4787:2021
+            print("nada")
+        else:
+            # ISO 8655:2022
+            for i, j in enumerate(res_array):
+                for x, y in enumerate(j):
+                    self.tableRes.setItem(x, i, QTableWidgetItem("%.2f" % y))
+            # Não é legal o usuário poder editar os resultos. Bloqueando!
+            self.tableRes.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+            # Calculando os limites, de acordo com a norma ISO do instrumento
+            match self.instKind.currentData()[1]:
+                case "msa":
+                    # comparando o erro sistemático com o limite da norma
+                    for column in range(self.tableRes.columnCount()):
+                        _item = self.tableRes.item(1, column)
+                        if _item:
+                            v_nom =  float(self.tableData.item(0,column).text())
+                            v_s = float(self.tableData.item(1,column).text())
+                            # verificando qual o limite dos erros na ISO 8655-2:2022
+                            if v_nom > 5000:
+                                e_vnom = 0.6
+                            elif v_nom > 50:
+                                e_vnom = 0.8
+                            elif v_nom > 10:
+                                e_vnom = 1.0
+                            elif v_nom > 5:
+                                e_vnom = 1.2
+                            else:
+                                e_vnom = 2.5                    
+                            limite = v_nom / v_s * e_vnom
+                            if abs(float(_item.text())) > limite:
+                                conf = False
+                            else:
+                                conf = True
+                            if not conf:
+                                _item.setToolTip("Deu ruim de acordo com a norma ISO 8855-2:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                    # comparando o erro aleatório com o limite da norma
+                    for column in range(self.tableRes.columnCount()):
+                        _item = self.tableRes.item(2, column)
+                        if _item:
+                            v_nom =  float(self.tableData.item(0,column).text())
+                            v_s = float(self.tableData.item(1,column).text())
+                            # verificando qual o limite dos erros na ISO 8655-2:2022
+                            if v_nom > 50:
+                                e_vnom = 0.3
+                            elif v_nom > 10:
+                                e_vnom = 0.5
+                            elif v_nom > 5:
+                                e_vnom = 0.8
+                            elif v_nom > 3:
+                                e_vnom = 1.5
+                            else:
+                                e_vnom = 2.0
+                            limite = v_nom / v_s * e_vnom
+                            if abs(float(_item.text())) > limite:
+                                conf = False
+                            else:
+                                conf = True
+                            if not conf:
+                                _item.setToolTip("Deu ruim de acordo com a norma ISO 8655-2:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                case "msd2":
+                    for column in range(self.tableRes.columnCount()):
+                        _item = self.tableRes.item(1, column)               
+                        if _item:
+                            v_nom =  float(self.tableData.item(0,column).text())
+                            v_s = float(self.tableData.item(1,column).text())
+                            # verificando qual o limite dos erros na ISO 8655-2:2022
+                            if v_nom > 100:
+                                e_vnom = 1.2
+                            elif v_nom > 20:
+                                e_vnom = 1.4
+                            elif v_nom > 5:
+                                e_vnom = 2.0
+                            else:
+                                e_vnom = 2.5
+                            limite = v_nom / v_s * e_vnom
+                            if abs(float(_item.text())) > limite:
+                                conf = False
+                            else:
+                                conf = True
+                            if not conf:
+                                _item.setToolTip("Deu ruim de acordo com a norma ISO 8855-2:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                    # comparando o erro aleatório com o limite da norma
+                    for column in range(self.tableRes.columnCount()):
+                        _item = self.tableRes.item(2, column)
+                        if _item:
+                            v_nom =  float(self.tableData.item(0,column).text())
+                            v_s = float(self.tableData.item(1,column).text())
+                            # verificando qual o limite dos erros na ISO 8655-2:2022
+                            if v_nom > 100:
+                                e_vnom = 0.4
+                            elif v_nom > 20:
+                                e_vnom = 0.6
+                            elif v_nom > 10:
+                                e_vnom = 0.8
+                            elif v_nom > 5:
+                                e_vnom = 1.0
+                            else:
+                                e_vnom = 1.5
+                            limite = v_nom / v_s * e_vnom
+                            if abs(float(_item.text())) > limite:
+                                conf = False
+                            else:
+                                conf = True
+                            if not conf:
+                                _item.setToolTip("Deu ruim de acordo com a norma ISO 8855-2:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                case "mm":
+                    # comparando o erro sistemático com o limite da norma
+                    for column in range(self.tableRes.columnCount()):                
+                        _item = self.tableRes.item(1, column)
+                        if _item:
+                            v_nom =  float(self.tableData.item(0,column).text())
+                            v_s = float(self.tableData.item(1,column).text())
+                            # verificando qual o limite dos erros na ISO 8655-2:2022
+                            if v_nom > 50:
+                                e_vnom = 1.6
+                            elif v_nom > 10:
+                                e_vnom = 2.0
+                            elif v_nom > 5:
+                                e_vnom = 2.4
+                            elif v_nom > 2:
+                                e_vnom = 5.0
+                            else:
+                                e_vnom = 8.0
+                            limite = v_nom / v_s * e_vnom
+                            if abs(float(_item.text())) > limite:
+                                conf = False
+                            else:
+                                conf = True
+                            if not conf:
+                                _item.setToolTip("Deu ruim de acordo com a norma ISO 8855-2:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                    # comparando o erro aleatório com o limite da norma
+                    for column in range(self.tableRes.columnCount()):
+                        _item = self.tableRes.item(2, column)
+                        if _item:
+                            v_nom =  float(self.tableData.item(0,column).text())
+                            v_s = float(self.tableData.item(1,column).text())
+                            # verificando qual o limite dos erros na ISO 8655-2:2022
+                            if v_nom > 50:
+                                e_vnom = 0.6
+                            elif v_nom > 20:
+                                e_vnom = 0.8
+                            elif v_nom > 10:
+                                e_vnom = 1.0
+                            elif v_nom > 5:
+                                e_vnom = 1.6
+                            elif v_nom > 2:
+                                e_vnom = 3.0
+                            else:
+                                e_vnom = 8.0
+                            limite = v_nom / v_s * e_vnom
+                            if abs(float(_item.text())) > limite:
+                                conf = False
+                            else:
+                                conf = True
+                            if not conf:
+                                _item.setToolTip("Deu ruim de acordo com a norma ISO 8655-2:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                case "bda":
+                    # comparando o erro sistemático com o limite da norma
+                    for column in range(self.tableRes.columnCount()):
+                        item = self.tableRes.item(1, column)
+                        if _item:
+                            v_nom =  float(self.tableData.item(0, column).text())
+                            v_s = float(self.tableData.item(1, column).text())
+                            # verificando qual o limite dos erros na ISO 8655-3:2022
+                            if v_nom > 5:
+                                e_vnom = 0.2
+                            elif v_nom > 2:
+                                e_vnom = 0.3
+                            elif v_nom > 1:
+                                e_vnom = 0.5
+                            else:
+                                e_vnom = 0.6
+                            limite = v_nom / v_s * e_vnom
+                            if abs(float(_item.text())) > limite:
+                                conf = False
+                            else:
+                                conf = True
+                            if not conf:
+                                _item.setToolTip("Deu ruim de acordo com a norma ISO 8855-3:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                    # comparando o erro aleatório com o limite da norma
+                    for column in range(self.tableRes.columnCount()):
+                        _item = self.tableRes.item(2, column)
+                        if _item:
+                            v_nom =  float(self.tableData.item(0, column).text())
+                            v_s = float(self.tableData.item(1, column).text())
+                            # verificando qual o limite dos erros na ISO 8655-3:2022
+                            if v_nom > 50:
+                                e_vnom = 0.03
+                            elif v_nom > 25:
+                                e_vnom = 0.05
+                            elif v_nom > 5:
+                                e_vnom = 0.07
+                            else:
+                                e_vnom = 0.1
+                            limite = v_nom / v_s * e_vnom
+                            if abs(float(_item.text())) > limite:
+                                conf = False
+                            else:
+                                conf = True
+                            if not conf:
+                                _item.setToolTip("Deu ruim de acordo com a norma ISO 8655-3:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                case "bdm":
+                    # comparando o erro sistemático com o limite da norma
+                    for column in range(self.tableRes.columnCount()):
+                        _item = self.tableRes.item(1, column)
+                        if _item:
+                            v_nom =  float(self.tableData.item(0,column).text())
+                            v_s = float(self.tableData.item(1,column).text())
+                            # verificando qual o limite dos erros na ISO 8655-3:2022
+                            if v_nom > 10:
+                                e_vnom = 0.2
+                            elif v_nom > 2:
+                                e_vnom = 0.3
+                            elif v_nom > 1:
+                                e_vnom = 0.5
+                            else:
+                                e_vnom = 0.6
+                            limite = v_nom / v_s * e_vnom
+                            if abs(float(_item.text())) > limite:
+                                conf = False
+                            else:
+                                conf = True
+                            if not conf:
+                                _item.setToolTip("Deu ruim de acordo com a norma ISO 8855-3:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                    # comparando o erro aleatório com o limite da norma
+                    for column in range(self.tableRes.columnCount()):
+                        _item = self.tableRes.item(2, column)
+                        if _item:
+                            v_nom =  float(self.tableData.item(0,column).text())
+                            v_s = float(self.tableData.item(1,column).text())
+                            # verificando qual o limite dos erros na ISO 8655-3:2022
                             e_vnom = 0.1
-                        limite = v_nom / v_s * e_vnom
-                        if abs(float(_item.text())) > limite:
-                            conf = False
-                        else:
-                            conf = True
-                        if not conf:
-                            _item.setToolTip("Deu ruim de acordo com a norma ISO 8655-3:2022.")
-                            _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
-            case "bdm":
-                # comparando o erro sistemático com o limite da norma
-                for column in range(self.tableRes.columnCount()):
-                    _item = self.tableRes.item(1, column)
-                    if _item:
-                        v_nom =  float(self.tableData.item(0,column).text())
-                        v_s = float(self.tableData.item(1,column).text())
-                        # verificando qual o limite dos erros na ISO 8655-3:2022
-                        if v_nom > 10:
-                            e_vnom = 0.2
-                        elif v_nom > 2:
-                            e_vnom = 0.3
-                        elif v_nom > 1:
-                            e_vnom = 0.5
-                        else:
-                            e_vnom = 0.6
-                        limite = v_nom / v_s * e_vnom
-                        if abs(float(_item.text())) > limite:
-                            conf = False
-                        else:
-                            conf = True
-                        if not conf:
-                            _item.setToolTip("Deu ruim de acordo com a norma ISO 8855-3:2022.")
-                            _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
-                # comparando o erro aleatório com o limite da norma
-                for column in range(self.tableRes.columnCount()):
-                    _item = self.tableRes.item(2, column)
-                    if _item:
-                        v_nom =  float(self.tableData.item(0,column).text())
-                        v_s = float(self.tableData.item(1,column).text())
-                        # verificando qual o limite dos erros na ISO 8655-3:2022
-                        e_vnom = 0.1
-                        limite = v_nom / v_s * e_vnom
-                        if abs(float(_item.text())) > limite:
-                            conf = False
-                        else:
-                            conf = True
-                        if not conf:
-                            _item.setToolTip("Deu ruim de acordo com a norma ISO 8655-3:2022.")
-                            _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
-            case "d":
-                # comparando o erro sistemático com o limite da norma
-                for column in range(self.tableRes.columnCount()):                
-                    _item = self.tableRes.item(1, column)
-                    if _item:
-                        v_nom =  float(self.tableData.item(0,column).text())
-                        v_s = float(self.tableData.item(1,column).text())
-                        # verificando qual o limite dos erros na ISO 8655-5:2022
-                        if v_nom > 0.5:
-                            e_vnom = 0.6
-                        elif v_nom > 0.1:
-                            e_vnom = 1.0
-                        elif v_nom > 0.02:
-                            e_vnom = 1.5
-                        else:
-                            e_vnom = 2.0
-                        limite = v_nom / v_s * e_vnom
-                        if abs(float(_item.text())) > limite:
-                            conf = False
-                        else:
-                            conf = True
-                        if not conf:
-                            _item.setToolTip("Deu ruim de acordo com a norma ISO 8855-5:2022.")
-                            _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
-                # comparando o erro aleatório com o limite da norma
-                for column in range(self.tableRes.columnCount()):
-                    _item = self.tableRes.item(2, column)
-                    if _item:
-                        v_nom =  float(self.tableData.item(0,column).text())
-                        v_s = float(self.tableData.item(1,column).text())
-                        # verificando qual o limite dos erros na ISO 8655-5:2022
-                        if v_nom > 0.2:
-                            e_vnom = 0.2
-                        elif v_nom > 0.05:
-                            e_vnom = 0.3
-                        elif v_nom > 0.02:
-                            e_vnom = 0.4
-                        elif v_nom > 0.01:
-                            e_vnom = 0.5
-                        else:
-                            e_vnom = 1.0
-                        limite = v_nom / v_s * e_vnom
-                        if abs(float(_item.text())) > limite:
-                            conf = False
-                        else:
-                            conf = True
-                        if not conf:
-                            _item.setToolTip("Deu ruim de acordo com a norma ISO 8655-5:2022.")
-                            _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                            limite = v_nom / v_s * e_vnom
+                            if abs(float(_item.text())) > limite:
+                                conf = False
+                            else:
+                                conf = True
+                            if not conf:
+                                _item.setToolTip("Deu ruim de acordo com a norma ISO 8655-3:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                case "d":
+                    # comparando o erro sistemático com o limite da norma
+                    for column in range(self.tableRes.columnCount()):                
+                        _item = self.tableRes.item(1, column)
+                        if _item:
+                            v_nom =  float(self.tableData.item(0,column).text())
+                            v_s = float(self.tableData.item(1,column).text())
+                            # verificando qual o limite dos erros na ISO 8655-5:2022
+                            if v_nom > 0.5:
+                                e_vnom = 0.6
+                            elif v_nom > 0.1:
+                                e_vnom = 1.0
+                            elif v_nom > 0.02:
+                                e_vnom = 1.5
+                            else:
+                                e_vnom = 2.0
+                            limite = v_nom / v_s * e_vnom
+                            if abs(float(_item.text())) > limite:
+                                conf = False
+                            else:
+                                conf = True
+                            if not conf:
+                                _item.setToolTip("Deu ruim de acordo com a norma ISO 8855-5:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                    # comparando o erro aleatório com o limite da norma
+                    for column in range(self.tableRes.columnCount()):
+                        _item = self.tableRes.item(2, column)
+                        if _item:
+                            v_nom =  float(self.tableData.item(0,column).text())
+                            v_s = float(self.tableData.item(1,column).text())
+                            # verificando qual o limite dos erros na ISO 8655-5:2022
+                            if v_nom > 0.2:
+                                e_vnom = 0.2
+                            elif v_nom > 0.05:
+                                e_vnom = 0.3
+                            elif v_nom > 0.02:
+                                e_vnom = 0.4
+                            elif v_nom > 0.01:
+                                e_vnom = 0.5
+                            else:
+                                e_vnom = 1.0
+                            limite = v_nom / v_s * e_vnom
+                            if abs(float(_item.text())) > limite:
+                                conf = False
+                            else:
+                                conf = True
+                            if not conf:
+                                _item.setToolTip("Deu ruim de acordo com a norma ISO 8655-5:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
 
 
     def handlePrint(self):

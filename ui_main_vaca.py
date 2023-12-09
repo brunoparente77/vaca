@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'vacaoXSKkx.ui'
+## Form generated from reading UI file 'vacanCEBIw.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.1
 ##
@@ -15,19 +15,19 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractScrollArea, QApplication, QComboBox, QDateEdit,
-    QDoubleSpinBox, QFormLayout, QGridLayout, QGroupBox,
-    QHBoxLayout, QHeaderView, QLabel, QLineEdit,
-    QMainWindow, QSizePolicy, QSpacerItem, QStatusBar,
-    QTableWidget, QTableWidgetItem, QToolBar, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QAbstractScrollArea, QAbstractSpinBox, QApplication, QCheckBox,
+    QComboBox, QDateEdit, QDoubleSpinBox, QFormLayout,
+    QGridLayout, QGroupBox, QHBoxLayout, QHeaderView,
+    QLabel, QLineEdit, QMainWindow, QSizePolicy,
+    QSpacerItem, QStatusBar, QTableWidget, QTableWidgetItem,
+    QToolBar, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1024, 900)
-        MainWindow.setMinimumSize(QSize(1024, 900))
+        MainWindow.resize(1024, 940)
+        MainWindow.setMinimumSize(QSize(1024, 720))
         MainWindow.setMaximumSize(QSize(4096, 3600))
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
@@ -159,7 +159,7 @@ class Ui_MainWindow(object):
         self.groupBox_3.setObjectName(u"groupBox_3")
         sizePolicy.setHeightForWidth(self.groupBox_3.sizePolicy().hasHeightForWidth())
         self.groupBox_3.setSizePolicy(sizePolicy)
-        self.groupBox_3.setMinimumSize(QSize(0, 155))
+        self.groupBox_3.setMinimumSize(QSize(0, 205))
         self.groupBox_3.setMaximumSize(QSize(16777215, 16777215))
         self.gridLayout_2 = QGridLayout(self.groupBox_3)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
@@ -172,10 +172,24 @@ class Ui_MainWindow(object):
 
         self.gridLayout_2.addWidget(self.presAtm, 1, 1, 1, 1)
 
-        self.label_25 = QLabel(self.groupBox_3)
-        self.label_25.setObjectName(u"label_25")
+        self.label_27 = QLabel(self.groupBox_3)
+        self.label_27.setObjectName(u"label_27")
 
-        self.gridLayout_2.addWidget(self.label_25, 2, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.label_27, 0, 0, 1, 1)
+
+        self.umidRel = QDoubleSpinBox(self.groupBox_3)
+        self.umidRel.setObjectName(u"umidRel")
+        self.umidRel.setMinimum(20.000000000000000)
+        self.umidRel.setMaximum(80.000000000000000)
+        self.umidRel.setSingleStep(0.500000000000000)
+        self.umidRel.setValue(45.000000000000000)
+
+        self.gridLayout_2.addWidget(self.umidRel, 2, 1, 1, 1)
+
+        self.label_24 = QLabel(self.groupBox_3)
+        self.label_24.setObjectName(u"label_24")
+
+        self.gridLayout_2.addWidget(self.label_24, 1, 0, 1, 1)
 
         self.tempAmb = QDoubleSpinBox(self.groupBox_3)
         self.tempAmb.setObjectName(u"tempAmb")
@@ -186,24 +200,40 @@ class Ui_MainWindow(object):
 
         self.gridLayout_2.addWidget(self.tempAmb, 0, 1, 1, 1)
 
-        self.label_27 = QLabel(self.groupBox_3)
-        self.label_27.setObjectName(u"label_27")
+        self.label_25 = QLabel(self.groupBox_3)
+        self.label_25.setObjectName(u"label_25")
 
-        self.gridLayout_2.addWidget(self.label_27, 0, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.label_25, 2, 0, 1, 1)
 
-        self.label_24 = QLabel(self.groupBox_3)
-        self.label_24.setObjectName(u"label_24")
+        self.label_5 = QLabel(self.groupBox_3)
+        self.label_5.setObjectName(u"label_5")
 
-        self.gridLayout_2.addWidget(self.label_24, 1, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.label_5, 3, 0, 1, 1)
 
-        self.umidRel = QDoubleSpinBox(self.groupBox_3)
-        self.umidRel.setObjectName(u"umidRel")
-        self.umidRel.setMinimum(20.000000000000000)
-        self.umidRel.setMaximum(80.000000000000000)
-        self.umidRel.setSingleStep(0.500000000000000)
-        self.umidRel.setValue(45.000000000000000)
+        self.mEvap = QDoubleSpinBox(self.groupBox_3)
+        self.mEvap.setObjectName(u"mEvap")
+        self.mEvap.setButtonSymbols(QAbstractSpinBox.NoButtons)
+        self.mEvap.setDecimals(5)
+        self.mEvap.setMaximum(10.000000000000000)
+        self.mEvap.setSingleStep(0.010000000000000)
+        self.mEvap.setStepType(QAbstractSpinBox.AdaptiveDecimalStepType)
 
-        self.gridLayout_2.addWidget(self.umidRel, 2, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.mEvap, 3, 1, 1, 1)
+
+        self.label_6 = QLabel(self.groupBox_3)
+        self.label_6.setObjectName(u"label_6")
+
+        self.gridLayout_2.addWidget(self.label_6, 4, 0, 1, 1)
+
+        self.densPesos = QDoubleSpinBox(self.groupBox_3)
+        self.densPesos.setObjectName(u"densPesos")
+        self.densPesos.setButtonSymbols(QAbstractSpinBox.NoButtons)
+        self.densPesos.setDecimals(2)
+        self.densPesos.setMinimum(1.000000000000000)
+        self.densPesos.setMaximum(20.000000000000000)
+        self.densPesos.setValue(8.000000000000000)
+
+        self.gridLayout_2.addWidget(self.densPesos, 4, 1, 1, 1)
 
 
         self.verticalLayout.addWidget(self.groupBox_3)
@@ -235,14 +265,19 @@ class Ui_MainWindow(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.groupBox_5.sizePolicy().hasHeightForWidth())
         self.groupBox_5.setSizePolicy(sizePolicy1)
-        self.groupBox_5.setMinimumSize(QSize(0, 550))
+        self.groupBox_5.setMinimumSize(QSize(0, 590))
         self.verticalLayout_3 = QVBoxLayout(self.groupBox_5)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.checkTara = QCheckBox(self.groupBox_5)
+        self.checkTara.setObjectName(u"checkTara")
+
+        self.verticalLayout_3.addWidget(self.checkTara)
+
         self.tableData = QTableWidget(self.groupBox_5)
         if (self.tableData.columnCount() < 12):
             self.tableData.setColumnCount(12)
-        if (self.tableData.rowCount() < 13):
-            self.tableData.setRowCount(13)
+        if (self.tableData.rowCount() < 14):
+            self.tableData.setRowCount(14)
         __qtablewidgetitem = QTableWidgetItem()
         self.tableData.setVerticalHeaderItem(0, __qtablewidgetitem)
         __qtablewidgetitem1 = QTableWidgetItem()
@@ -269,12 +304,14 @@ class Ui_MainWindow(object):
         self.tableData.setVerticalHeaderItem(11, __qtablewidgetitem11)
         __qtablewidgetitem12 = QTableWidgetItem()
         self.tableData.setVerticalHeaderItem(12, __qtablewidgetitem12)
+        __qtablewidgetitem13 = QTableWidgetItem()
+        self.tableData.setVerticalHeaderItem(13, __qtablewidgetitem13)
         self.tableData.setObjectName(u"tableData")
         self.tableData.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.tableData.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.tableData.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
         self.tableData.setCornerButtonEnabled(False)
-        self.tableData.setRowCount(13)
+        self.tableData.setRowCount(14)
         self.tableData.setColumnCount(12)
         self.tableData.horizontalHeader().setVisible(True)
 
@@ -294,12 +331,12 @@ class Ui_MainWindow(object):
             self.tableRes.setColumnCount(12)
         if (self.tableRes.rowCount() < 3):
             self.tableRes.setRowCount(3)
-        __qtablewidgetitem13 = QTableWidgetItem()
-        self.tableRes.setVerticalHeaderItem(0, __qtablewidgetitem13)
         __qtablewidgetitem14 = QTableWidgetItem()
-        self.tableRes.setVerticalHeaderItem(1, __qtablewidgetitem14)
+        self.tableRes.setVerticalHeaderItem(0, __qtablewidgetitem14)
         __qtablewidgetitem15 = QTableWidgetItem()
-        self.tableRes.setVerticalHeaderItem(2, __qtablewidgetitem15)
+        self.tableRes.setVerticalHeaderItem(1, __qtablewidgetitem15)
+        __qtablewidgetitem16 = QTableWidgetItem()
+        self.tableRes.setVerticalHeaderItem(2, __qtablewidgetitem16)
         self.tableRes.setObjectName(u"tableRes")
         self.tableRes.setColumnCount(12)
 
@@ -351,15 +388,20 @@ class Ui_MainWindow(object):
         self.higId.setText(QCoreApplication.translate("MainWindow", u"Meu higr\u00f4metro", None))
         self.term2Id.setText(QCoreApplication.translate("MainWindow", u"Meu outro term\u00f4metro", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Term\u00f4metro \u00e1gua:", None))
-        self.groupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"Condi\u00e7\u00f5es ambientais:", None))
+        self.groupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"Par\u00e2metros ambientais:", None))
         self.presAtm.setSuffix(QCoreApplication.translate("MainWindow", u" hPa", None))
-        self.label_25.setText(QCoreApplication.translate("MainWindow", u"Umidade relativa:", None))
-        self.tempAmb.setSuffix(QCoreApplication.translate("MainWindow", u"\u00b0C", None))
         self.label_27.setText(QCoreApplication.translate("MainWindow", u"Temperatura ambiente:", None))
-        self.label_24.setText(QCoreApplication.translate("MainWindow", u"Press\u00e3o atmosf\u00e9rica:", None))
         self.umidRel.setSuffix(QCoreApplication.translate("MainWindow", u"%", None))
+        self.label_24.setText(QCoreApplication.translate("MainWindow", u"Press\u00e3o atmosf\u00e9rica:", None))
+        self.tempAmb.setSuffix(QCoreApplication.translate("MainWindow", u"\u00b0C", None))
+        self.label_25.setText(QCoreApplication.translate("MainWindow", u"Umidade relativa:", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Perda por evapora\u00e7\u00e3o:", None))
+        self.mEvap.setSuffix(QCoreApplication.translate("MainWindow", u" g", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Dens. dos pesos de ref.:", None))
+        self.densPesos.setSuffix(QCoreApplication.translate("MainWindow", u" g\u00b7mL\u207b\u00b9", None))
         self.label_2.setText("")
         self.groupBox_5.setTitle(QCoreApplication.translate("MainWindow", u"Dados do ensaio:", None))
+        self.checkTara.setText(QCoreApplication.translate("MainWindow", u"Balan\u00e7a tarada entre as medidas", None))
         ___qtablewidgetitem = self.tableData.verticalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"Volume nominal, em mL", None));
         ___qtablewidgetitem1 = self.tableData.verticalHeaderItem(1)
@@ -367,32 +409,34 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem2 = self.tableData.verticalHeaderItem(2)
         ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"Temperatura da \u00e1gua, em \u00b0C", None));
         ___qtablewidgetitem3 = self.tableData.verticalHeaderItem(3)
-        ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"1\u00aa pesagem, em g", None));
+        ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"Massa do recipiente, em g", None));
         ___qtablewidgetitem4 = self.tableData.verticalHeaderItem(4)
-        ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"2\u00aa pesagem, em g", None));
+        ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"1\u00aa pesagem, em g", None));
         ___qtablewidgetitem5 = self.tableData.verticalHeaderItem(5)
-        ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"3\u00aa pesagem, em g", None));
+        ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"2\u00aa pesagem, em g", None));
         ___qtablewidgetitem6 = self.tableData.verticalHeaderItem(6)
-        ___qtablewidgetitem6.setText(QCoreApplication.translate("MainWindow", u"4\u00aa pesagem, em g", None));
+        ___qtablewidgetitem6.setText(QCoreApplication.translate("MainWindow", u"3\u00aa pesagem, em g", None));
         ___qtablewidgetitem7 = self.tableData.verticalHeaderItem(7)
-        ___qtablewidgetitem7.setText(QCoreApplication.translate("MainWindow", u"5\u00aa pesagem, em g", None));
+        ___qtablewidgetitem7.setText(QCoreApplication.translate("MainWindow", u"4\u00aa pesagem, em g", None));
         ___qtablewidgetitem8 = self.tableData.verticalHeaderItem(8)
-        ___qtablewidgetitem8.setText(QCoreApplication.translate("MainWindow", u"6\u00aa pesagem, em g", None));
+        ___qtablewidgetitem8.setText(QCoreApplication.translate("MainWindow", u"5\u00aa pesagem, em g", None));
         ___qtablewidgetitem9 = self.tableData.verticalHeaderItem(9)
-        ___qtablewidgetitem9.setText(QCoreApplication.translate("MainWindow", u"7\u00aa pesagem, em g", None));
+        ___qtablewidgetitem9.setText(QCoreApplication.translate("MainWindow", u"6\u00aa pesagem, em g", None));
         ___qtablewidgetitem10 = self.tableData.verticalHeaderItem(10)
-        ___qtablewidgetitem10.setText(QCoreApplication.translate("MainWindow", u"8\u00aa pesagem, em g", None));
+        ___qtablewidgetitem10.setText(QCoreApplication.translate("MainWindow", u"7\u00aa pesagem, em g", None));
         ___qtablewidgetitem11 = self.tableData.verticalHeaderItem(11)
-        ___qtablewidgetitem11.setText(QCoreApplication.translate("MainWindow", u"9\u00aa pesagem, em g", None));
+        ___qtablewidgetitem11.setText(QCoreApplication.translate("MainWindow", u"8\u00aa pesagem, em g", None));
         ___qtablewidgetitem12 = self.tableData.verticalHeaderItem(12)
-        ___qtablewidgetitem12.setText(QCoreApplication.translate("MainWindow", u"10\u00aa pesagem, em g", None));
+        ___qtablewidgetitem12.setText(QCoreApplication.translate("MainWindow", u"9\u00aa pesagem, em g", None));
+        ___qtablewidgetitem13 = self.tableData.verticalHeaderItem(13)
+        ___qtablewidgetitem13.setText(QCoreApplication.translate("MainWindow", u"10\u00aa pesagem, em g", None));
         self.groupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"Resultados:", None))
-        ___qtablewidgetitem13 = self.tableRes.verticalHeaderItem(0)
-        ___qtablewidgetitem13.setText(QCoreApplication.translate("MainWindow", u"Volume medido, em mL", None));
-        ___qtablewidgetitem14 = self.tableRes.verticalHeaderItem(1)
-        ___qtablewidgetitem14.setText(QCoreApplication.translate("MainWindow", u"Erro sistem\u00e1tico, em %", None));
-        ___qtablewidgetitem15 = self.tableRes.verticalHeaderItem(2)
-        ___qtablewidgetitem15.setText(QCoreApplication.translate("MainWindow", u"Erro aleat\u00f3rio, em %", None));
+        ___qtablewidgetitem14 = self.tableRes.verticalHeaderItem(0)
+        ___qtablewidgetitem14.setText(QCoreApplication.translate("MainWindow", u"Volume medido, em mL", None));
+        ___qtablewidgetitem15 = self.tableRes.verticalHeaderItem(1)
+        ___qtablewidgetitem15.setText(QCoreApplication.translate("MainWindow", u"Erro sistem\u00e1tico, em %", None));
+        ___qtablewidgetitem16 = self.tableRes.verticalHeaderItem(2)
+        ___qtablewidgetitem16.setText(QCoreApplication.translate("MainWindow", u"Erro aleat\u00f3rio, em %", None));
         self.toolBar.setWindowTitle(QCoreApplication.translate("MainWindow", u"toolBar", None))
     # retranslateUi
 
