@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'vacanCEBIw.ui'
+## Form generated from reading UI file 'designerXNPpks.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.1
 ##
@@ -18,27 +18,33 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QAbstractScrollArea, QAbstractSpinBox, QApplication, QCheckBox,
     QComboBox, QDateEdit, QDoubleSpinBox, QFormLayout,
     QGridLayout, QGroupBox, QHBoxLayout, QHeaderView,
-    QLabel, QLineEdit, QMainWindow, QSizePolicy,
-    QSpacerItem, QStatusBar, QTableWidget, QTableWidgetItem,
-    QToolBar, QVBoxLayout, QWidget)
+    QLabel, QLineEdit, QMainWindow, QScrollArea,
+    QSizePolicy, QSpacerItem, QStatusBar, QTableWidget,
+    QTableWidgetItem, QToolBar, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1024, 940)
-        MainWindow.setMinimumSize(QSize(1024, 720))
-        MainWindow.setMaximumSize(QSize(4096, 3600))
+        MainWindow.resize(1280, 720)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.horizontalLayout = QHBoxLayout(self.centralwidget)
+        self.verticalLayout = QVBoxLayout(self.centralwidget)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.scrollArea = QScrollArea(self.centralwidget)
+        self.scrollArea.setObjectName(u"scrollArea")
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollAreaWidgetContents = QWidget()
+        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1246, 896))
+        self.horizontalLayout = QHBoxLayout(self.scrollAreaWidgetContents)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.widget_2 = QWidget(self.centralwidget)
+        self.widget_2 = QWidget(self.scrollAreaWidgetContents)
         self.widget_2.setObjectName(u"widget_2")
         self.widget_2.setMinimumSize(QSize(400, 0))
         self.widget_2.setMaximumSize(QSize(390, 16777215))
-        self.verticalLayout = QVBoxLayout(self.widget_2)
-        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout_2 = QVBoxLayout(self.widget_2)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.groupBox = QGroupBox(self.widget_2)
         self.groupBox.setObjectName(u"groupBox")
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.MinimumExpanding)
@@ -92,7 +98,7 @@ class Ui_MainWindow(object):
         self.formLayout.setWidget(2, QFormLayout.FieldRole, self.instMat)
 
 
-        self.verticalLayout.addWidget(self.groupBox)
+        self.verticalLayout_2.addWidget(self.groupBox)
 
         self.groupBox_2 = QGroupBox(self.widget_2)
         self.groupBox_2.setObjectName(u"groupBox_2")
@@ -153,7 +159,7 @@ class Ui_MainWindow(object):
         self.formLayout_4.setWidget(2, QFormLayout.LabelRole, self.label)
 
 
-        self.verticalLayout.addWidget(self.groupBox_2)
+        self.verticalLayout_2.addWidget(self.groupBox_2)
 
         self.groupBox_3 = QGroupBox(self.widget_2)
         self.groupBox_3.setObjectName(u"groupBox_3")
@@ -236,7 +242,7 @@ class Ui_MainWindow(object):
         self.gridLayout_2.addWidget(self.densPesos, 4, 1, 1, 1)
 
 
-        self.verticalLayout.addWidget(self.groupBox_3)
+        self.verticalLayout_2.addWidget(self.groupBox_3)
 
         self.label_2 = QLabel(self.widget_2)
         self.label_2.setObjectName(u"label_2")
@@ -245,19 +251,19 @@ class Ui_MainWindow(object):
         self.label_2.setScaledContents(True)
         self.label_2.setAlignment(Qt.AlignCenter)
 
-        self.verticalLayout.addWidget(self.label_2, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+        self.verticalLayout_2.addWidget(self.label_2, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
         self.verticalSpacer = QSpacerItem(20, 56, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.verticalLayout.addItem(self.verticalSpacer)
+        self.verticalLayout_2.addItem(self.verticalSpacer)
 
 
         self.horizontalLayout.addWidget(self.widget_2)
 
-        self.widget = QWidget(self.centralwidget)
+        self.widget = QWidget(self.scrollAreaWidgetContents)
         self.widget.setObjectName(u"widget")
-        self.verticalLayout_2 = QVBoxLayout(self.widget)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_3 = QVBoxLayout(self.widget)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.groupBox_5 = QGroupBox(self.widget)
         self.groupBox_5.setObjectName(u"groupBox_5")
         sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
@@ -266,12 +272,12 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.groupBox_5.sizePolicy().hasHeightForWidth())
         self.groupBox_5.setSizePolicy(sizePolicy1)
         self.groupBox_5.setMinimumSize(QSize(0, 590))
-        self.verticalLayout_3 = QVBoxLayout(self.groupBox_5)
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_4 = QVBoxLayout(self.groupBox_5)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.checkTara = QCheckBox(self.groupBox_5)
         self.checkTara.setObjectName(u"checkTara")
 
-        self.verticalLayout_3.addWidget(self.checkTara)
+        self.verticalLayout_4.addWidget(self.checkTara)
 
         self.tableData = QTableWidget(self.groupBox_5)
         if (self.tableData.columnCount() < 12):
@@ -315,17 +321,17 @@ class Ui_MainWindow(object):
         self.tableData.setColumnCount(12)
         self.tableData.horizontalHeader().setVisible(True)
 
-        self.verticalLayout_3.addWidget(self.tableData)
+        self.verticalLayout_4.addWidget(self.tableData)
 
 
-        self.verticalLayout_2.addWidget(self.groupBox_5)
+        self.verticalLayout_3.addWidget(self.groupBox_5)
 
         self.groupBox_4 = QGroupBox(self.widget)
         self.groupBox_4.setObjectName(u"groupBox_4")
         sizePolicy1.setHeightForWidth(self.groupBox_4.sizePolicy().hasHeightForWidth())
         self.groupBox_4.setSizePolicy(sizePolicy1)
-        self.verticalLayout_4 = QVBoxLayout(self.groupBox_4)
-        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.verticalLayout_5 = QVBoxLayout(self.groupBox_4)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.tableRes = QTableWidget(self.groupBox_4)
         if (self.tableRes.columnCount() < 12):
             self.tableRes.setColumnCount(12)
@@ -340,17 +346,21 @@ class Ui_MainWindow(object):
         self.tableRes.setObjectName(u"tableRes")
         self.tableRes.setColumnCount(12)
 
-        self.verticalLayout_4.addWidget(self.tableRes)
+        self.verticalLayout_5.addWidget(self.tableRes)
 
 
-        self.verticalLayout_2.addWidget(self.groupBox_4)
+        self.verticalLayout_3.addWidget(self.groupBox_4)
 
         self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.verticalLayout_2.addItem(self.verticalSpacer_2)
+        self.verticalLayout_3.addItem(self.verticalSpacer_2)
 
 
         self.horizontalLayout.addWidget(self.widget)
+
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+
+        self.verticalLayout.addWidget(self.scrollArea)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QStatusBar(MainWindow)
@@ -358,10 +368,6 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.toolBar = QToolBar(MainWindow)
         self.toolBar.setObjectName(u"toolBar")
-        sizePolicy1.setHeightForWidth(self.toolBar.sizePolicy().hasHeightForWidth())
-        self.toolBar.setSizePolicy(sizePolicy1)
-        self.toolBar.setMovable(False)
-        self.toolBar.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
         MainWindow.addToolBar(Qt.TopToolBarArea, self.toolBar)
 
         self.retranslateUi(MainWindow)
