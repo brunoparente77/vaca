@@ -165,7 +165,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             vol_array = []
             for column in table_array:
-                print(column)
                 if len(column) != 0:
                     tw = column[2]
                     vol = []

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'designerXNPpks.ui'
+## Form generated from reading UI file 'vacaemQhCu.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.1
 ##
@@ -26,7 +26,11 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1280, 720)
+        MainWindow.resize(1050, 980)
+        font = QFont()
+        font.setFamilies([u"Cantarell"])
+        font.setPointSize(12)
+        MainWindow.setFont(font)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
@@ -36,7 +40,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1246, 896))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1030, 919))
         self.horizontalLayout = QHBoxLayout(self.scrollAreaWidgetContents)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.widget_2 = QWidget(self.scrollAreaWidgetContents)
@@ -368,6 +372,9 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.toolBar = QToolBar(MainWindow)
         self.toolBar.setObjectName(u"toolBar")
+        self.toolBar.setMovable(False)
+        self.toolBar.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        self.toolBar.setFloatable(False)
         MainWindow.addToolBar(Qt.TopToolBarArea, self.toolBar)
 
         self.retranslateUi(MainWindow)
@@ -376,7 +383,7 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"V.A.Ca.", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Identifica\u00e7\u00e3o do instrumento ensaiado:", None))
         self.label_28.setText(QCoreApplication.translate("MainWindow", u"Identifica\u00e7\u00e3o:", None))
         self.instId.setText(QCoreApplication.translate("MainWindow", u"Meu equipamento", None))
