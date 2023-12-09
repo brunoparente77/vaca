@@ -160,8 +160,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ro_b = self.densPesos.value()
         # transformando massa em volume
         # um IF, pois há pequenas diferenças entre a ISO 4787 e a ISO 8655
-        if self.instKind.currentData()[0] in ["bv", "bvl", "b", "pv", "pg"]:
-            print("nada ainda")
+        if self.instKind.currentData()[1] in ["bv", "bvl", "b", "pv", "pg"]:
+            vol_array = []
+            for column in table_array:
+                if len(column) != 0:
+                    tw = column[2]
+                    vol = []
+                    for i, ml in enumerate(column):
+                        ro_w = calc_ro_water(tw, ta, ua, pa)
+                        ro_a = calc_ro_air( ta, ua, pa)
+                        if self.checkTara.isChecked():
+                            v = ml * 1/(ro_w + ro_a) * (1 - ro_a / ro_b) * (1 - coef_term * (tw - 20))
+                            vol.append(v * mult)
+                        else:
+                            v = (ml - column[3]) * 1/(ro_w + ro_a) * (1 - ro_a / ro_b) * (1 - coef_term * (tw - 20))
+                            vol.append(v * mult)
+                    # restaurando o volume nominal, ensaiado
+                    vol[0] = column[0]
+                    vol[1] = column[1]
+                    # removendo temperatura e massa do recipiente
+                    vol.pop(2)
+                    vol.pop(2)
+                    # inserindo a coluna no novo array de volumes
+                    vol_array.append(vol)
         else:
             vol_array = []
             for column in table_array:
@@ -368,7 +389,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 case "bda":
                     # comparando o erro sistemático com o limite da norma
                     for column in range(self.tableRes.columnCount()):
-                        item = self.tableRes.item(1, column)
+                        _item = self.tableRes.item(1, column)
                         if _item:
                             v_nom =  float(self.tableData.item(0, column).text())
                             v_s = float(self.tableData.item(1, column).text())
