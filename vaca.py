@@ -88,6 +88,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         button_relat = QAction(QIcon(os.path.join(basedir,"relat_icon.svg")), "Relatório", self)
         button_relat.triggered.connect(self.handlePrint)
         self.toolBar.addAction(button_relat)
+        button_sobre = QAction(QIcon(os.path.join(basedir,"icon.svg")), "Sobre", self)
+        button_sobre.triggered.connect(self.sobre)
+        self.toolBar.addAction(button_sobre)
         # populando drop list com o multiplicador pra apresentar o resultado em µL ou mL
         # e tipo de instrumento
         self.instKind.addItem("Balão volumétrico Classe A", (1, "bv"))
@@ -118,6 +121,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tableData.verticalHeader().setFixedWidth(210)
         self.tableRes.verticalHeader().setFixedWidth(210)
     
+    def sobre(self):
+        QMessageBox.about(self, "Sobre..", "V.A.Ca. (versão <i>Angus</i>) foi idealizado "
+                                           "e desenvolvido por Bruno Parente utilizando "
+                                           "Python (%s) e PySide (%s). "
+                                           "Seu código-fonte encontra-se disponível em "
+                                           "https://github.com/brunoparente77/vaca"
+                                           % (python_version(), pyside_version))
     def muda_unidade(self):
         # troca a unidade da interface de acordo com a unidade de volume do instrumento
         if self.instKind.currentData()[0] == 1:
@@ -823,7 +833,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     html += '<td>{}</td>'.format("-")
             html += '</tr>'
         html += '</tbody></table>'
-        html += '<p align="right"><small>Impresso por V.A.Ca v. 1.0 em {}.</small></p></body></html>'.format(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
+        html += '<p align="right"><small>Impresso por V.A.Ca (v. <i>Angus</i>) em {}.</small></p></body></html>'.format(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
 #         html += '</tbody></table><div style="page-break-before:always"><p>Apenas um teste</p></div></body></html>'
         document.setHtml(html)
         return document
