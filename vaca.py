@@ -29,7 +29,8 @@ from PySide6.QtWidgets import (
     QApplication,
     QTableWidget,
     QTableWidgetItem,
-    QFileDialog
+    QFileDialog,
+    QMessageBox
 )
 from PySide6.QtCore import (
     QDate,
@@ -89,17 +90,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.toolBar.addAction(button_relat)
         # populando drop list com o multiplicador pra apresentar o resultado em µL ou mL
         # e tipo de instrumento
-        self.instKind.addItem("Balão volumétrico", (1, "bv"))
-        self.instKind.addItem("Balão volumétrico (boca larga)", (1, "bvl"))
-        self.instKind.addItem("Bureta", (1, "b"))
+        self.instKind.addItem("Balão volumétrico Classe A", (1, "bv"))
+        self.instKind.addItem("Bal. vol. Cl. A, boca larga", (1, "bvl"))
+        self.instKind.addItem("Bureta Classe A|AS", (1, "b"))
         self.instKind.addItem('Bureta "digital" manual', (1, "bdm"))
         self.instKind.addItem('Bureta "digital" motorizada', (1, "bda"))
         self.instKind.addItem("Dispensador", (1, "d"))
         self.instKind.addItem("Micropipeta tipo A|D1", (1000, "msa"))
         self.instKind.addItem("Micropipeta tipo D2", (1000, "msd2"))
         self.instKind.addItem("Micropipeta multicanal", (1000, "mm"))
-        self.instKind.addItem("Pipeta graduada", (1, "pg"))
-        self.instKind.addItem("Pipeta volumétrica", (1, "pv"))
+        self.instKind.addItem("Pipeta graduada Classe A|AS", (1, "pg"))
+        self.instKind.addItem("Pipeta volumétrica Classe A|AS", (1, "pv"))
         # populando drop list com o coeficiente de expansão térmica de acordo com o material
         self.instMat.addItem("Vidro borossilicato 3.3", 9.9e-6)
         self.instMat.addItem("Vidro borossilicato 5.0", 1.5e-5)
@@ -222,9 +223,220 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             res_array.append(res)
         # atribuindo os resultados à tabela tableRes da interface
         # novo IF, pois a 47
-        if self.instKind.currentData()[0] in ["bv", "bvl", "b", "pv", "pg"]:
+        if self.instKind.currentData()[1] in ["bv", "bvl", "b", "pv", "pg"]:
             # ISO 4787:2021
-            print("nada")
+            for i, j in enumerate(res_array):
+                for x, y in enumerate(j):
+                    self.tableRes.setItem(x, i, QTableWidgetItem("%.2f" % y))
+            # Não é legal o usuário poder editar os resultos. Bloqueando!
+            self.tableRes.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+            # Calculando os limites, de acordo com a norma ISO do instrumento
+            match self.instKind.currentData()[1]:
+                case "bv":
+                    # comparando o erro sistemático com o limite da norma
+                    for column in range(self.tableRes.columnCount()):
+                        _item = self.tableRes.item(1, column)
+                        if _item:
+                            v_nom =  float(self.tableData.item(0,column).text())
+                            v_s = float(self.tableData.item(1,column).text())
+                            # verificando qual o limite dos erros na ISO 8655-2:2022
+                            # o erro é em mL para vidraira Classe A
+                            if v_nom == 5000:
+                                e_vnom = 1.2
+                            elif v_nom == 2000:
+                                e_vnom = 0.6
+                            elif v_nom == 1000:
+                                e_vnom = 0.4
+                            elif v_nom == 500:
+                                e_vnom = 0.25
+                            elif v_nom == 250:
+                                e_vnom = 0.15
+                            elif v_nom == 200:
+                                e_vnom = 0.15
+                            elif v_nom == 100:
+                                e_vnom = 0.1
+                            elif v_nom == 50:
+                                e_vnom = 0.06
+                            elif v_nom == 25:
+                                e_vnom = 0.04
+                            elif v_nom == 20:
+                                e_vnom = 0.04
+                            elif v_nom == 10:
+                                e_vnom = 0.025
+                            elif v_nom == 5:
+                                e_vnom = 0.025
+                            elif v_nom == 2:
+                                e_vnom = 0.025
+                            elif v_nom == 1:
+                                e_vnom = 0.025
+                            else:
+                                e_vnom = 1e+6
+                                QMessageBox.about(self, "Informação",
+                                                        "O volume nominal informado não está "
+                                                        "previsto na norma ISO 1042:1998 para "
+                                                        "esta vidraria. A conformidade dos "
+                                                        "resultados não será avaliada.")
+                            if abs(float(_item.text())) > e_vnom:
+                                conf = False
+                            else:
+                                conf = True
+                            if not conf:
+                                _item.setToolTip("Não conforme com vidraia Classe A da ISO 1042:1998.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                case "bvl":
+                    # comparando o erro sistemático com o limite da norma
+                    for column in range(self.tableRes.columnCount()):
+                        _item = self.tableRes.item(1, column)
+                        if _item:
+                            v_nom =  float(self.tableData.item(0,column).text())
+                            v_s = float(self.tableData.item(1,column).text())
+                            # verificando qual o limite dos erros na ISO 8655-2:2022
+                            # o erro é em mL para vidraira Classe A
+                            if v_nom == 1000:
+                                e_vnom = 0.6
+                            elif v_nom == 50:
+                                e_vnom = 0.1
+                            elif v_nom == 25:
+                                e_vnom = 0.06
+                            elif v_nom == 20:
+                                e_vnom = 0.06
+                            elif v_nom == 10:
+                                e_vnom = 0.04
+                            elif v_nom == 5:
+                                e_vnom = 0.04
+                            else:
+                                e_vnom = 1e+6
+                                QMessageBox.about(self, "Informação",
+                                                        "O volume nominal informado não está "
+                                                        "previsto na norma ISO 1042:1998 para "
+                                                        "esta vidraria. A conformidade dos "
+                                                        "resultados não será avaliada.")
+                            if abs(float(_item.text())) > e_vnom:
+                                conf = False
+                            else:
+                                conf = True
+                            if not conf:
+                                _item.setToolTip("Não conforme com vidraia Classe A da ISO 1042:1998.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                case "b":
+                    # comparando o erro sistemático com o limite da norma
+                    for column in range(self.tableRes.columnCount()):
+                        _item = self.tableRes.item(1, column)
+                        if _item:
+                            v_nom =  float(self.tableData.item(0,column).text())
+                            v_s = float(self.tableData.item(1,column).text())
+                            # verificando qual o limite dos erros na ISO 8655-2:2022
+                            # o erro é em mL para vidraira Classe A
+                            if v_nom == 100:
+                                e_vnom = 0.1
+                            elif v_nom == 50:
+                                e_vnom = 0.05
+                            elif v_nom == 25:
+                                e_vnom = 0.05
+                            elif v_nom == 10:
+                                e_vnom = 0.03
+                            elif v_nom == 5:
+                                e_vnom = 0.01
+                            elif v_nom == 2:
+                                e_vnom = 0.01
+                            elif v_nom == 1:
+                                e_vnom = 0.006
+                            else:
+                                e_vnom = 1e+6
+                                QMessageBox.about(self, "Informação",
+                                                        "O volume nominal informado não está "
+                                                        "previsto na norma ISO 385:2005 para "
+                                                        "esta vidraria. A conformidade dos "
+                                                        "resultados não será avaliada.")
+                            if abs(float(_item.text())) > e_vnom:
+                                conf = False
+                            else:
+                                conf = True
+                            if not conf:
+                                _item.setToolTip("Não conforme com vidraia Classe A|AS da ISO 385:2005.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                case "pg":
+                    # comparando o erro sistemático com o limite da norma
+                    for column in range(self.tableRes.columnCount()):
+                        _item = self.tableRes.item(1, column)
+                        if _item:
+                            v_nom =  float(self.tableData.item(0,column).text())
+                            v_s = float(self.tableData.item(1,column).text())
+                            # verificando qual o limite dos erros na ISO 8655-2:2022
+                            # o erro é em mL para vidraira Classe A
+                            if v_nom == 25:
+                                e_vnom = 0.1
+                            elif v_nom == 20:
+                                e_vnom = 0.1
+                            elif v_nom == 10:
+                                e_vnom = 0.05
+                            elif v_nom == 5:
+                                e_vnom = 0.03
+                            elif v_nom == 2:
+                                e_vnom = 0.01
+                            elif v_nom == 1:
+                                e_vnom = 0.007
+                            elif v_nom == 0.5:
+                                e_vnom = 0.006
+                            elif v_nom == 0.2:
+                                e_vnom = 0.006
+                            elif v_nom == 0.1:
+                                e_vnom = 0.006
+                            else:
+                                e_vnom = 1e+6
+                                QMessageBox.about(self, "Informação",
+                                                        "O volume nominal informado não está "
+                                                        "previsto na norma ISO 835:2007 para "
+                                                        "esta vidraria. A conformidade dos "
+                                                        "resultados não será avaliada.")
+                            if abs(float(_item.text())) > e_vnom:
+                                conf = False
+                            else:
+                                conf = True
+                            if not conf:
+                                _item.setToolTip("Não conforme com vidraia Classe A|AS da ISO 835:2007.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                case "pv":
+                    # comparando o erro sistemático com o limite da norma
+                    for column in range(self.tableRes.columnCount()):
+                        _item = self.tableRes.item(1, column)
+                        if _item:
+                            v_nom =  float(self.tableData.item(0,column).text())
+                            v_s = float(self.tableData.item(1,column).text())
+                            # verificando qual o limite dos erros na ISO 8655-2:2022
+                            # o erro é em mL para vidraira Classe A
+                            if v_nom == 100:
+                                e_vnom = 0.08
+                            elif v_nom == 50:
+                                e_vnom = 0.05
+                            elif v_nom == 25:
+                                e_vnom = 0.03
+                            elif v_nom == 20:
+                                e_vnom = 0.03
+                            elif v_nom == 10:
+                                e_vnom = 0.02
+                            elif v_nom == 5:
+                                e_vnom = 0.015
+                            elif v_nom == 2:
+                                e_vnom = 0.010
+                            elif v_nom == 1:
+                                e_vnom = 0.008
+                            elif v_nom == 0.5:
+                                e_vnom = 0.005
+                            else:
+                                e_vnom = 1e+6
+                                QMessageBox.about(self, "Informação",
+                                                        "O volume nominal informado não está "
+                                                        "previsto na norma ISO 648:2008 para "
+                                                        "esta vidraria. A conformidade dos "
+                                                        "resultados não será avaliada.")
+                            if abs(float(_item.text())) > e_vnom:
+                                conf = False
+                            else:
+                                conf = True
+                            if not conf:
+                                _item.setToolTip("Não conforme com vidraia Classe A|AS da ISO 648:1998.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
         else:
             # ISO 8655:2022
             for i, j in enumerate(res_array):
@@ -551,7 +763,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         <body dir="ltr">
         <h1 align="center">Relatório de Ensaio</h1>
         """
-        html += '<p><b>Identificação do equipamento: </b><big>' + self.instId.text() + '</big></p>'
+        html += '<p><b>Identificação do equipamento: </b><big>' + self.instId.text() + '</big><br>'
+        html += '<b>Data de realização do ensaio:</b> ' + self.dateEdit.date().toString("dd/MM/yyyy") + '</p>'
         html += '<table width="100%"><tr><td width="50%">'
         html += '<p><b>Identificação dos instrumentos de medida utilizados:</b><br>'
         html += 'Balança: ' + self.balId.text() + '<br>'
@@ -560,11 +773,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         html += 'Barômetro: ' + self.barId.text() + '<br>'
         html += 'Higrômetro: ' + self.higId.text() + '</p>'
         html += '</td><td width="50%"></td>'
-        html += '<p><b>Condições ambientais:</b><br>'
-        html += 'Data de realização do ensaio: ' + self.dateEdit.date().toString("dd/MM/yyyy") + '<br>'
-        html += 'Temperatura ambiente: ' + str(self.tempAmb.value()) + '°C <br>'
-        html += 'Pressão atmosférica: ' + str(self.presAtm.value()) + ' hPa <br>'
-        html += 'Umidade relativa do ar: ' + str(self.umidRel.value()) + '% </p></td></tr></table>'
+        html += '<p><b>Parâmetros ambientais:</b><br>'
+        html += 'Temperatura ambiente: ' + str(self.tempAmb.value()) + '°C<br>'
+        html += 'Pressão atmosférica: ' + str(self.presAtm.value()) + ' hPa<br>'
+        html += 'Umidade relativa do ar: ' + str(self.umidRel.value()) + '%<br>'
+        html += 'Perda por evaporação: ' + str(self.mEvap.value()) + ' g<br>'
+        html += 'Densidade das massas de referência: ' + str(self.densPesos.value()) + ' g·mL⁻¹</p></td></tr></table>'
         html += '<p><b>Dados das medidas de massa:</b></p>'
         html += '<table border="1" cellpadding="2" width="100%" style="border-collapse: collapse"><thead>'
         html += '<tr>'
