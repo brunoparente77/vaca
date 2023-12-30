@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'vacaemQhCu.ui'
+## Form generated from reading UI file 'vacapXnfIx.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.1
 ##
@@ -390,7 +390,7 @@ class Ui_MainWindow(object):
         self.label_29.setText(QCoreApplication.translate("MainWindow", u"Tipo:", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Data do ensaio:", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Material:", None))
-        self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"Identifica\u00e7\u00e3o dos instrumentos utilisados:", None))
+        self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"Identifica\u00e7\u00e3o dos instrumentos utilizados:", None))
         self.label_20.setText(QCoreApplication.translate("MainWindow", u"Balan\u00e7a:", None))
         self.balId.setText(QCoreApplication.translate("MainWindow", u"Minha balan\u00e7a", None))
         self.label_21.setText(QCoreApplication.translate("MainWindow", u"Term\u00f4metro ambiente:", None))
@@ -447,7 +447,7 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem14 = self.tableRes.verticalHeaderItem(0)
         ___qtablewidgetitem14.setText(QCoreApplication.translate("MainWindow", u"Volume medido, em mL", None));
         ___qtablewidgetitem15 = self.tableRes.verticalHeaderItem(1)
-        ___qtablewidgetitem15.setText(QCoreApplication.translate("MainWindow", u"Erro sistem\u00e1tico, em %", None));
+        ___qtablewidgetitem15.setText(QCoreApplication.translate("MainWindow", u"Erro sistem\u00e1tico, em mL", None));
         ___qtablewidgetitem16 = self.tableRes.verticalHeaderItem(2)
         ___qtablewidgetitem16.setText(QCoreApplication.translate("MainWindow", u"Erro aleat\u00f3rio, em %", None));
         self.toolBar.setWindowTitle(QCoreApplication.translate("MainWindow", u"toolBar", None))

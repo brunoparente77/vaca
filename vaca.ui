@@ -147,7 +147,7 @@
               </size>
              </property>
              <property name="title">
-              <string>Identificação dos instrumentos utilisados:</string>
+              <string>Identificação dos instrumentos utilizados:</string>
              </property>
              <layout class="QFormLayout" name="formLayout_4">
               <item row="0" column="0">
@@ -586,7 +586,7 @@
                 </row>
                 <row>
                  <property name="text">
-                  <string>Erro sistemático, em %</string>
+                  <string>Erro sistemático, em mL</string>
                  </property>
                 </row>
                 <row>
