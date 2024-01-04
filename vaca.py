@@ -230,7 +230,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             v = ml * 1/(ro_w + ro_a) * (1 - ro_a / ro_b) * (1 - coef_term * (tw - 20))
                             vol.append(v * mult)
                         else:
-                            v = (ml - column[3]) * 1/(ro_w + ro_a) * (1 - ro_a / ro_b) * (1 - coef_term * (tw - 20))
+                            v = (ml - column[i - 1]) * 1/(ro_w + ro_a) * (1 - ro_a / ro_b) * (1 - coef_term * (tw - 20))
                             vol.append(v * mult)
                     # restaurando o volume nominal, ensaiado
                     vol[0] = column[0]
@@ -242,7 +242,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     vol_array.append(vol)
         else:
             vol_array = []
-            for column in table_array:
+            for medida, column in enumerate(table_array):
                 if len(column) != 0:
                     # verificando se foi informado o volume nominal
                     try:
