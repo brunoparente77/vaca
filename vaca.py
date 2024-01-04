@@ -230,7 +230,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             v = ml * 1/(ro_w + ro_a) * (1 - ro_a / ro_b) * (1 - coef_term * (tw - 20))
                             vol.append(v * mult)
                         else:
-                            v = (ml - column[i - 1]) * 1/(ro_w + ro_a) * (1 - ro_a / ro_b) * (1 - coef_term * (tw - 20))
+                            if self.instKind.currentData()[1] in ["bv", "bvl"]:
+                                v = (ml - column[3]) * 1/(ro_w + ro_a) * (1 - ro_a / ro_b) * (1 - coef_term * (tw - 20))
+                            else:
+                                v = (ml - column[i - 1]) * 1/(ro_w + ro_a) * (1 - ro_a / ro_b) * (1 - coef_term * (tw - 20))
                             vol.append(v * mult)
                     # restaurando o volume nominal, ensaiado
                     vol[0] = column[0]
@@ -362,13 +365,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                         "previsto na norma ISO 1042:1998 para "
                                                         "esta vidraria. A conformidade dos "
                                                         "resultados não será avaliada.")
-                            if abs(float(_item.text())) > e_vnom:
-                                conf = False
-                            else:
-                                conf = True
-                            if not conf:
-                                _item.setToolTip("Não conforme com vidraria Classe A da ISO 1042:1998.")
-                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                            if e_vnom < 1e+5:
+                                if abs(float(_item.text())) > e_vnom:
+                                    _item.setToolTip("Não conforme com vidraria Classe A da ISO 1042:1998.")
+                                    _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                                else:
+                                    _item.setToolTip("Conforme com vidraria Classe A da ISO 1042:1998.")
+                                    _item.setIcon(QIcon(os.path.join(basedir, "ok.svg")))
+                                
                 case "bvl":
                     # comparando o erro sistemático com o limite da norma
                     for column in range(self.tableRes.columnCount()):
@@ -397,13 +401,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                         "previsto na norma ISO 1042:1998 para "
                                                         "esta vidraria. A conformidade dos "
                                                         "resultados não será avaliada.")
-                            if abs(float(_item.text())) > e_vnom:
-                                conf = False
-                            else:
-                                conf = True
-                            if not conf:
-                                _item.setToolTip("Não conforme com vidraria Classe A da ISO 1042:1998.")
-                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                            if e_vnom < 1e+5:
+                                if abs(float(_item.text())) > e_vnom:
+                                    _item.setToolTip("Não conforme com vidraria Classe A da ISO 1042:1998.")
+                                    _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                                else:
+                                    _item.setToolTip("Conforme com vidraria Classe A da ISO 1042:1998.")
+                                    _item.setIcon(QIcon(os.path.join(basedir, "ok.svg")))
                 case "b":
                     # comparando o erro sistemático com o limite da norma
                     for column in range(self.tableRes.columnCount()):
@@ -411,7 +415,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         if _item:
                             v_nom =  float(self.tableData.item(0,column).text().replace(",", "."))
                             v_s = float(self.tableData.item(1,column).text().replace(",", "."))
-                            # verificando qual o limite dos erros na ISO 8655-2:2022
+                            # verificando qual o limite dos erros na ISO 385:2005
                             # o erro é em mL para vidraira Classe A
                             if v_nom == 100:
                                 e_vnom = 0.1
@@ -434,13 +438,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                         "previsto na norma ISO 385:2005 para "
                                                         "esta vidraria. A conformidade dos "
                                                         "resultados não será avaliada.")
-                            if abs(float(_item.text())) > e_vnom:
-                                conf = False
-                            else:
-                                conf = True
-                            if not conf:
-                                _item.setToolTip("Não conforme com vidraria Classe A|AS da ISO 385:2005.")
-                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                            if e_vnom < 1e+5:
+                                if abs(float(_item.text())) > e_vnom:
+                                    _item.setToolTip("Não conforme com vidraria Classe A|AS da ISO 385:2005.")
+                                    _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                                else:
+                                    _item.setToolTip("Conforme com vidraria Classe A|AS da ISO 385:2005.")
+                                    _item.setIcon(QIcon(os.path.join(basedir, "ok.svg")))
                 case "pg":
                     # comparando o erro sistemático com o limite da norma
                     for column in range(self.tableRes.columnCount()):
@@ -448,7 +452,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         if _item:
                             v_nom =  float(self.tableData.item(0,column).text().replace(",", "."))
                             v_s = float(self.tableData.item(1,column).text().replace(",", "."))
-                            # verificando qual o limite dos erros na ISO 8655-2:2022
+                            # verificando qual o limite dos erros na ISO 835:2007
                             # o erro é em mL para vidraira Classe A
                             if v_nom == 25:
                                 e_vnom = 0.1
@@ -475,13 +479,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                         "previsto na norma ISO 835:2007 para "
                                                         "esta vidraria. A conformidade dos "
                                                         "resultados não será avaliada.")
-                            if abs(float(_item.text())) > e_vnom:
-                                conf = False
-                            else:
-                                conf = True
-                            if not conf:
-                                _item.setToolTip("Não conforme com vidraria Classe A|AS da ISO 835:2007.")
-                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                            if e_vnom < 1e+5:
+                                if abs(float(_item.text())) > e_vnom:
+                                    _item.setToolTip("Não conforme com vidraria Classe A|AS da ISO 835:2007.")
+                                    _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                                else:
+                                    _item.setToolTip("Conforme com vidraria Classe A|AS da ISO 835:2007.")
+                                    _item.setIcon(QIcon(os.path.join(basedir, "ok.svg")))
                 case "pv":
                     # comparando o erro sistemático com o limite da norma
                     for column in range(self.tableRes.columnCount()):
@@ -489,7 +493,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         if _item:
                             v_nom =  float(self.tableData.item(0,column).text().replace(",", "."))
                             v_s = float(self.tableData.item(1,column).text().replace(",", "."))
-                            # verificando qual o limite dos erros na ISO 8655-2:2022
+                            # verificando qual o limite dos erros na ISO 648:2008
                             # o erro é em mL para vidraira Classe A
                             if v_nom == 100:
                                 e_vnom = 0.08
@@ -516,13 +520,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                         "previsto na norma ISO 648:2008 para "
                                                         "esta vidraria. A conformidade dos "
                                                         "resultados não será avaliada.")
-                            if abs(float(_item.text())) > e_vnom:
-                                conf = False
-                            else:
-                                conf = True
-                            if not conf:
-                                _item.setToolTip("Não conforme com vidraria Classe A|AS da ISO 648:1998.")
-                                _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                            if e_vnom < 1e+5:
+                                if abs(float(_item.text())) > e_vnom:
+                                    _item.setToolTip("Não conforme com vidraria Classe A|AS da ISO 648:1998.")
+                                    _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                                else:
+                                    _item.setToolTip("Conforme com vidraria Classe A|AS da ISO 648:1998.")
+                                    _item.setIcon(QIcon(os.path.join(basedir, "ok.svg")))
         else:
             # ISO 8655:2022
              # calculando os resultados
@@ -567,12 +571,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 e_vnom = 2.5                    
                             limite = v_nom / v_s * e_vnom
                             if abs(float(_item.text())) > limite:
-                                conf = False
-                            else:
-                                conf = True
-                            if not conf:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-2:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                            else:
+                                _item.setToolTip("Conforme com os limites da norma ISO 8655-2:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "ok.svg")))
                     # comparando o erro aleatório com o limite da norma
                     for column in range(self.tableRes.columnCount()):
                         _item = self.tableRes.item(2, column)
@@ -592,12 +595,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 e_vnom = 2.0
                             limite = v_nom / v_s * e_vnom
                             if abs(float(_item.text())) > limite:
-                                conf = False
-                            else:
-                                conf = True
-                            if not conf:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-2:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                            else:
+                                _item.setToolTip("Conforme com os limites da norma ISO 8655-2:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "ok.svg")))
                 case "msd2":
                     for column in range(self.tableRes.columnCount()):
                         _item = self.tableRes.item(1, column)               
@@ -615,12 +617,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 e_vnom = 2.5
                             limite = v_nom / v_s * e_vnom
                             if abs(float(_item.text())) > limite:
-                                conf = False
-                            else:
-                                conf = True
-                            if not conf:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-2:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                            else:
+                                _item.setToolTip("Conforme com os limites da norma ISO 8655-2:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "ok.svg")))
                     # comparando o erro aleatório com o limite da norma
                     for column in range(self.tableRes.columnCount()):
                         _item = self.tableRes.item(2, column)
@@ -640,12 +641,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 e_vnom = 1.5
                             limite = v_nom / v_s * e_vnom
                             if abs(float(_item.text())) > limite:
-                                conf = False
-                            else:
-                                conf = True
-                            if not conf:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-2:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                            else:
+                                _item.setToolTip("Conforme com os limites da norma ISO 8655-2:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "ok.svg")))
                 case "mm":
                     # comparando o erro sistemático com o limite da norma
                     for column in range(self.tableRes.columnCount()):                
@@ -666,12 +666,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 e_vnom = 8.0
                             limite = v_nom / v_s * e_vnom
                             if abs(float(_item.text())) > limite:
-                                conf = False
-                            else:
-                                conf = True
-                            if not conf:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-2:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                            else:
+                                _item.setToolTip("Conforme com os limites da norma ISO 8655-2:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "ok.svg")))
                     # comparando o erro aleatório com o limite da norma
                     for column in range(self.tableRes.columnCount()):
                         _item = self.tableRes.item(2, column)
@@ -693,12 +692,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 e_vnom = 8.0
                             limite = v_nom / v_s * e_vnom
                             if abs(float(_item.text())) > limite:
-                                conf = False
-                            else:
-                                conf = True
-                            if not conf:
-                                _item.setToolTip("Deu ruim de acordo com a norma ISO 8655-2:2022.")
+                                _item.setToolTip("Não conforme com os limites da norma ISO 8655-2:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                            else:
+                                _item.setToolTip("Conforme com os limites da norma ISO 8655-2:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "ok.svg")))
                 case "bda":
                     # comparando o erro sistemático com o limite da norma
                     for column in range(self.tableRes.columnCount()):
@@ -717,12 +715,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 e_vnom = 0.6
                             limite = v_nom / v_s * e_vnom
                             if abs(float(_item.text())) > limite:
-                                conf = False
-                            else:
-                                conf = True
-                            if not conf:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-3:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                            else:
+                                _item.setToolTip("Conforme com os limites da norma ISO 8655-3:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "ok.svg")))
                     # comparando o erro aleatório com o limite da norma
                     for column in range(self.tableRes.columnCount()):
                         _item = self.tableRes.item(2, column)
@@ -740,12 +737,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 e_vnom = 0.1
                             limite = v_nom / v_s * e_vnom
                             if abs(float(_item.text())) > limite:
-                                conf = False
-                            else:
-                                conf = True
-                            if not conf:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-3:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                            else:
+                                _item.setToolTip("Conforme com os limites da norma ISO 8655-3:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "ok.svg")))
                 case "bdm":
                     # comparando o erro sistemático com o limite da norma
                     for column in range(self.tableRes.columnCount()):
@@ -764,12 +760,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 e_vnom = 0.6
                             limite = v_nom / v_s * e_vnom
                             if abs(float(_item.text())) > limite:
-                                conf = False
-                            else:
-                                conf = True
-                            if not conf:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-3:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                            else:
+                                _item.setToolTip("Conforme com os limites da norma ISO 8655-3:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "ok.svg")))
                     # comparando o erro aleatório com o limite da norma
                     for column in range(self.tableRes.columnCount()):
                         _item = self.tableRes.item(2, column)
@@ -780,12 +775,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             e_vnom = 0.1
                             limite = v_nom / v_s * e_vnom
                             if abs(float(_item.text())) > limite:
-                                conf = False
-                            else:
-                                conf = True
-                            if not conf:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-3:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                            else:
+                                _item.setToolTip("Conforme com os limites da norma ISO 8655-3:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "ok.svg")))
                 case "d":
                     # comparando o erro sistemático com o limite da norma
                     for column in range(self.tableRes.columnCount()):                
@@ -804,12 +798,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 e_vnom = 2.0
                             limite = v_nom / v_s * e_vnom
                             if abs(float(_item.text())) > limite:
-                                conf = False
-                            else:
-                                conf = True
-                            if not conf:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-5:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                            else:
+                                _item.setToolTip("Conforme com os limites da norma ISO 8655-5:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "ok.svg")))
                     # comparando o erro aleatório com o limite da norma
                     for column in range(self.tableRes.columnCount()):
                         _item = self.tableRes.item(2, column)
@@ -829,12 +822,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 e_vnom = 1.0
                             limite = v_nom / v_s * e_vnom
                             if abs(float(_item.text())) > limite:
-                                conf = False
-                            else:
-                                conf = True
-                            if not conf:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-5:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
+                            else:
+                                _item.setToolTip("Conforme com os limites da norma ISO 8655-5:2022.")
+                                _item.setIcon(QIcon(os.path.join(basedir, "ok.svg")))
 
 
     def handlePrint(self):
