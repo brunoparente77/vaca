@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'vacapXnfIx.ui'
+## Form generated from reading UI file 'vacasfsDjU.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.1
 ##
@@ -26,7 +26,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1050, 980)
+        MainWindow.resize(1240, 960)
         font = QFont()
         font.setFamilies([u"Cantarell"])
         font.setPointSize(12)
@@ -40,7 +40,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1030, 919))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1220, 899))
         self.horizontalLayout = QHBoxLayout(self.scrollAreaWidgetContents)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.widget_2 = QWidget(self.scrollAreaWidgetContents)
@@ -250,7 +250,7 @@ class Ui_MainWindow(object):
 
         self.label_2 = QLabel(self.widget_2)
         self.label_2.setObjectName(u"label_2")
-        self.label_2.setMaximumSize(QSize(330, 251))
+        self.label_2.setMaximumSize(QSize(300, 226))
         self.label_2.setPixmap(QPixmap(u"logo.png"))
         self.label_2.setScaledContents(True)
         self.label_2.setAlignment(Qt.AlignCenter)
@@ -275,7 +275,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.groupBox_5.sizePolicy().hasHeightForWidth())
         self.groupBox_5.setSizePolicy(sizePolicy1)
-        self.groupBox_5.setMinimumSize(QSize(0, 590))
+        self.groupBox_5.setMinimumSize(QSize(0, 600))
         self.verticalLayout_4 = QVBoxLayout(self.groupBox_5)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.checkTara = QCheckBox(self.groupBox_5)
@@ -284,8 +284,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.addWidget(self.checkTara)
 
         self.tableData = QTableWidget(self.groupBox_5)
-        if (self.tableData.columnCount() < 12):
-            self.tableData.setColumnCount(12)
+        if (self.tableData.columnCount() < 5):
+            self.tableData.setColumnCount(5)
         if (self.tableData.rowCount() < 14):
             self.tableData.setRowCount(14)
         __qtablewidgetitem = QTableWidgetItem()
@@ -317,15 +317,16 @@ class Ui_MainWindow(object):
         __qtablewidgetitem13 = QTableWidgetItem()
         self.tableData.setVerticalHeaderItem(13, __qtablewidgetitem13)
         self.tableData.setObjectName(u"tableData")
-        self.tableData.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.tableData.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.tableData.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.tableData.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+        self.tableData.setAutoScroll(True)
         self.tableData.setCornerButtonEnabled(False)
         self.tableData.setRowCount(14)
-        self.tableData.setColumnCount(12)
+        self.tableData.setColumnCount(5)
         self.tableData.horizontalHeader().setVisible(True)
 
-        self.verticalLayout_4.addWidget(self.tableData)
+        self.verticalLayout_4.addWidget(self.tableData, 0, Qt.AlignLeft|Qt.AlignVCenter)
 
 
         self.verticalLayout_3.addWidget(self.groupBox_5)
@@ -334,11 +335,12 @@ class Ui_MainWindow(object):
         self.groupBox_4.setObjectName(u"groupBox_4")
         sizePolicy1.setHeightForWidth(self.groupBox_4.sizePolicy().hasHeightForWidth())
         self.groupBox_4.setSizePolicy(sizePolicy1)
+        self.groupBox_4.setMinimumSize(QSize(0, 205))
         self.verticalLayout_5 = QVBoxLayout(self.groupBox_4)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.tableRes = QTableWidget(self.groupBox_4)
-        if (self.tableRes.columnCount() < 12):
-            self.tableRes.setColumnCount(12)
+        if (self.tableRes.columnCount() < 5):
+            self.tableRes.setColumnCount(5)
         if (self.tableRes.rowCount() < 3):
             self.tableRes.setRowCount(3)
         __qtablewidgetitem14 = QTableWidgetItem()
@@ -348,12 +350,19 @@ class Ui_MainWindow(object):
         __qtablewidgetitem16 = QTableWidgetItem()
         self.tableRes.setVerticalHeaderItem(2, __qtablewidgetitem16)
         self.tableRes.setObjectName(u"tableRes")
-        self.tableRes.setColumnCount(12)
+        self.tableRes.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.tableRes.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.tableRes.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+        self.tableRes.setAutoScroll(True)
+        self.tableRes.setCornerButtonEnabled(False)
+        self.tableRes.setRowCount(3)
+        self.tableRes.setColumnCount(5)
+        self.tableRes.horizontalHeader().setVisible(True)
 
-        self.verticalLayout_5.addWidget(self.tableRes)
+        self.verticalLayout_5.addWidget(self.tableRes, 0, Qt.AlignLeft)
 
 
-        self.verticalLayout_3.addWidget(self.groupBox_4)
+        self.verticalLayout_3.addWidget(self.groupBox_4, 0, Qt.AlignVCenter)
 
         self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
@@ -424,25 +433,25 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem3 = self.tableData.verticalHeaderItem(3)
         ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"Massa do recipiente, em g", None));
         ___qtablewidgetitem4 = self.tableData.verticalHeaderItem(4)
-        ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"1\u00aa pesagem, em g", None));
+        ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"1\u00aa medida, em g", None));
         ___qtablewidgetitem5 = self.tableData.verticalHeaderItem(5)
-        ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"2\u00aa pesagem, em g", None));
+        ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"2\u00aa medida, em g", None));
         ___qtablewidgetitem6 = self.tableData.verticalHeaderItem(6)
-        ___qtablewidgetitem6.setText(QCoreApplication.translate("MainWindow", u"3\u00aa pesagem, em g", None));
+        ___qtablewidgetitem6.setText(QCoreApplication.translate("MainWindow", u"3\u00aa medida, em g", None));
         ___qtablewidgetitem7 = self.tableData.verticalHeaderItem(7)
-        ___qtablewidgetitem7.setText(QCoreApplication.translate("MainWindow", u"4\u00aa pesagem, em g", None));
+        ___qtablewidgetitem7.setText(QCoreApplication.translate("MainWindow", u"4\u00aa medida, em g", None));
         ___qtablewidgetitem8 = self.tableData.verticalHeaderItem(8)
-        ___qtablewidgetitem8.setText(QCoreApplication.translate("MainWindow", u"5\u00aa pesagem, em g", None));
+        ___qtablewidgetitem8.setText(QCoreApplication.translate("MainWindow", u"5\u00aa medida, em g", None));
         ___qtablewidgetitem9 = self.tableData.verticalHeaderItem(9)
-        ___qtablewidgetitem9.setText(QCoreApplication.translate("MainWindow", u"6\u00aa pesagem, em g", None));
+        ___qtablewidgetitem9.setText(QCoreApplication.translate("MainWindow", u"6\u00aa medida, em g", None));
         ___qtablewidgetitem10 = self.tableData.verticalHeaderItem(10)
-        ___qtablewidgetitem10.setText(QCoreApplication.translate("MainWindow", u"7\u00aa pesagem, em g", None));
+        ___qtablewidgetitem10.setText(QCoreApplication.translate("MainWindow", u"7\u00aa medida, em g", None));
         ___qtablewidgetitem11 = self.tableData.verticalHeaderItem(11)
-        ___qtablewidgetitem11.setText(QCoreApplication.translate("MainWindow", u"8\u00aa pesagem, em g", None));
+        ___qtablewidgetitem11.setText(QCoreApplication.translate("MainWindow", u"8\u00aa medida, em g", None));
         ___qtablewidgetitem12 = self.tableData.verticalHeaderItem(12)
-        ___qtablewidgetitem12.setText(QCoreApplication.translate("MainWindow", u"9\u00aa pesagem, em g", None));
+        ___qtablewidgetitem12.setText(QCoreApplication.translate("MainWindow", u"9\u00aa medida, em g", None));
         ___qtablewidgetitem13 = self.tableData.verticalHeaderItem(13)
-        ___qtablewidgetitem13.setText(QCoreApplication.translate("MainWindow", u"10\u00aa pesagem, em g", None));
+        ___qtablewidgetitem13.setText(QCoreApplication.translate("MainWindow", u"10\u00aa medida, em g", None));
         self.groupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"Resultados:", None))
         ___qtablewidgetitem14 = self.tableRes.verticalHeaderItem(0)
         ___qtablewidgetitem14.setText(QCoreApplication.translate("MainWindow", u"Volume medido, em mL", None));

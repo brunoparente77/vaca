@@ -64,7 +64,6 @@ def calc_ro_water(tw, ta, ua, pa):
 def calc_ro_air(ta, ua, pa):
     # Densidade do ar de acordo com a ISO 8655-6:2022
     ro_a = (1 / 1000) * (0.34848 * pa - 0.009 * ua * math.e**(0.061 * ta))/(ta + 273.15)
-    # cálculo de z de acordo com a ISO 8655-6:2022
     return ro_a
 
 # variáveis para armazenamento das tabelas para uso na impressão
@@ -110,6 +109,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.instKind.addItem("Pipeta graduada Classe A|AS", (1, "pg"))
         self.instKind.addItem("Pipeta volumétrica Classe A|AS", (1, "pv"))
         # populando drop list com o coeficiente de expansão térmica de acordo com o material
+        # valores da ISO 1042:1998
         self.instMat.addItem("Vidro borossilicato 3.3", 9.9e-6)
         self.instMat.addItem("Vidro borossilicato 5.0", 1.5e-5)
         self.instMat.addItem("Vidro soda-lime", 2.7e-5)
@@ -147,17 +147,30 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.tableRes.setVerticalHeaderItem(1, QTableWidgetItem("Erro sistemático, em %"))
 
     def clear_tables(self):
-        self.tableData.clearContents() 
+        # limpa os dados das tabelas e variáveis globais
+        self.tableData.clearContents()
         self.tableRes.clearContents()
+        global table_data
+        global vol_data
+        global res_data
+        table_data = []
+        vol_data = []
+        res_data = []
 
     def calcular(self):
         # limpando a tabela de resultados
         self.tableRes.clearContents()
+        # extraindo as condições ambientais
+        ta = self.tempAmb.value()
+        pa = self.presAtm.value()
+        ua = self.umidRel.value()
+        m_evap = self.mEvap.value()
+        ro_b = self.densPesos.value()
         # resgatando qual multiplicador usar para calcular em mL ou µL
         mult = self.instKind.currentData()[0]
         # coeficiente de expansão térmica do material
         coef_term = self.instMat.currentData()
-        # extarindo o array dos dados de massa
+        # extraindo o array dos dados de massa
         table_array = []
         for i in range(self.tableData.columnCount()):
             col = []
@@ -165,26 +178,49 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for j in range(self.tableData.rowCount()):
                 item = self.tableData.item(j, i)
                 if item is not None and item.text().strip():
+                    # remove o ícone, caso tenha sido adicionado pelo "erro"
+                    item.setIcon(QIcon())
                     text = item.text().replace(",", ".")
+                    # se o valor não for um número, dá erro
                     try:
                         col.append(float(text))
                     except ValueError:
-                        print("." + text + "."  + str(i) + ", " + str(j))                        
+                        QMessageBox.critical(self, "V.A.Ca.",
+                                          "O valor informado não é um número válido.")
+                        item.setIcon(QIcon(os.path.join(basedir, "critical.svg")))
         # salvando pra futuro relatório
         global table_data
         table_data = table_array
-        # extraindo as condições ambientais
-        ta = self.tempAmb.value()
-        pa = self.presAtm.value()
-        ua = self.umidRel.value()
-        m_evap = self.mEvap.value()
-        ro_b = self.densPesos.value()
         # transformando massa em volume
         # um IF, pois há pequenas diferenças entre a ISO 4787 e a ISO 8655
         if self.instKind.currentData()[1] in ["bv", "bvl", "b", "pv", "pg"]:
             vol_array = []
-            for column in table_array:
+            for medida, column in enumerate(table_array):
                 if len(column) != 0:
+                    # verificando se foi informado o volume nominal
+                    try:
+                        float(self.tableData.item(0, medida).text().replace(",", "."))
+                    except:
+                        QMessageBox.critical(self, "V.A.Ca.",
+                                          "O valor do volume nominal não é um número válido.")
+                        self.tableData.setItem(0, medida, QTableWidgetItem(QIcon(os.path.join(basedir, "critical.svg")), ""))
+                        break
+                    # o volume medido
+                    try:
+                        float(self.tableData.item(1, medida).text().replace(",", "."))
+                    except:
+                        QMessageBox.critical(self, "V.A.Ca.",
+                                          "O valor do volume medido não é um número válido.")
+                        self.tableData.setItem(1, medida, QTableWidgetItem(QIcon(os.path.join(basedir, "critical.svg")), ""))
+                        break
+                    # e a temperatura da água
+                    try:
+                        float(self.tableData.item(2, medida).text().replace(",", "."))
+                    except:
+                        QMessageBox.critical(self, "V.A.Ca.",
+                                          "O valor da temperatura da água não é um número válido.")
+                        self.tableData.setItem(2, medida, QTableWidgetItem(QIcon(os.path.join(basedir, "critical.svg")), ""))
+                        break
                     tw = column[2]
                     vol = []
                     for i, ml in enumerate(column):
@@ -208,6 +244,30 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             vol_array = []
             for column in table_array:
                 if len(column) != 0:
+                    # verificando se foi informado o volume nominal
+                    try:
+                        float(self.tableData.item(0, medida).text().replace(",", "."))
+                    except:
+                        QMessageBox.critical(self, "V.A.Ca.",
+                                          "O valor do volume nominal não é um número válido.")
+                        self.tableData.setItem(0, medida, QTableWidgetItem(QIcon(os.path.join(basedir, "critical.svg")), ""))
+                        break
+                    # o volume medido
+                    try:
+                        float(self.tableData.item(1, medida).text().replace(",", "."))
+                    except:
+                        QMessageBox.critical(self, "V.A.Ca.",
+                                          "O valor do volume medido não é um número válido.")
+                        self.tableData.setItem(1, medida, QTableWidgetItem(QIcon(os.path.join(basedir, "critical.svg")), ""))
+                        break
+                    # e a temperatura da água
+                    try:
+                        float(self.tableData.item(2, medida).text().replace(",", "."))
+                    except:
+                        QMessageBox.critical(self, "V.A.Ca.",
+                                          "O valor da temperatura da água não é um número válido.")
+                        self.tableData.setItem(2, medida, QTableWidgetItem(QIcon(os.path.join(basedir, "critical.svg")), ""))
+                        break
                     tw = column[2]
                     vol = []
                     for i, ml in enumerate(column):
@@ -785,14 +845,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             printer = QtPrintSupport.QPrinter(QtPrintSupport.QPrinter.HighResolution)
             printer.setOutputFormat(QtPrintSupport.QPrinter.PdfFormat)
             printer.setPageSize(QPageSize.A4)
-            printer.setPageOrientation(QPageLayout.Landscape)
+            printer.setPageOrientation(QPageLayout.Portrait)
             printer.setPageMargins(QMargins(0, 0, 0, 0))
             printer.setOutputFileName(filename)
             document = self.makeTableDocument()
             document.print_(printer)
     
     def makeTableDocument(self):
-        # padding as atbelas pra facilitar o html
+        # padding as tabelas pra facilitar o html
         global table_data
         for a in table_data:
             a += ['-'] * (14 - len(a))
@@ -812,7 +872,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             unid = 'mL'                
         document = QTextDocument()
-        document.setPageSize(QSizeF(842, 596))
+        document.setPageSize(QSizeF(596, 842))
         document.setDocumentMargin(10)
         document.setDefaultFont(QFont("Cantarell", 7))
         html = """<html>
@@ -844,70 +904,70 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         html += '<p><b>Dados das medidas de massa:</b></p>'
         html += '<table border="1" cellpadding="2" width="100%" style="border-collapse: collapse"><thead>'
         html += '<tr>'
-        for c in range(12 + 1): # doze colunas da tabela + uma do cabeçalho vertical
+        for c in range(self.tableData.columnCount() + 1): # nº de colunas da tabela + uma do cabeçalho vertical
             if c == 0:
-                html += '<th width="16%" bgcolor="#E5E4E2"></th>'
+                html += '<th width="20%" bgcolor="#E5E4E2"></th>'
             else:
                 html += '<th bgcolor="#E5E4E2">{}</th>'.format(c)
         html += '</tr></thead>'
         html += '<tbody>'
-        for r in range(14): # a tabela tem 14 linhas
+        for r in range(self.tableData.rowCount()): # nº de linhas
             html += '<tr>'
             html += '<td bgcolor="#E5E4E2">{}</td>'.format(self.tableData.verticalHeaderItem(r).text())
-            for c in range(12):
+            for c in range(self.tableData.columnCount()):
                 item = table_data[c][r]
                 if isinstance(item, str):
-                    html += '<td>{}</td>'.format(item)
+                    html += '<td align="right">{}</td>'.format(item)
                 else:
-                    html += '<td>{}</td>'.format(str(item).replace(".", ","))
+                    html += '<td align="right">{}</td>'.format(str(item).replace(".", ","))
             html += '</tr>'
         html += '</tbody></table>'
         html += '<div style="page-break-before:always"><p align="right"><small>Página 2 de 2</small></p>'
         html += '<p><b>Dados das medidas convertidos para volume:</b></p>'
         html += '<table border="1" cellpadding="2" width="100%" style="border-collapse: collapse"><thead>'
         html += '<tr>'
-        for c in range(12 + 1): # doze colunas da tabela + uma do cabeçalho vertical
+        for c in range(self.tableData.columnCount() + 1):
             if c == 0:
-                html += '<th width="16%" bgcolor="#E5E4E2"></th>'
+                html += '<th width="20%" bgcolor="#E5E4E2"></th>'
             else:
                 html += '<th bgcolor="#E5E4E2">{}</th>'.format(c)
         html += '</tr></thead>'
         html += '<tbody>'
-        for r in range(12): # a tabela tem 12 linhas
+        for r in range(self.tableData.rowCount() - 2):
             html += '<tr>'
             if r == 0 or r == 1:
                 html += '<td bgcolor="#E5E4E2">{}</td>'.format(self.tableData.verticalHeaderItem(r).text())
             else:
                 html += '<td bgcolor="#E5E4E2">{}</td>'.format(str(r-1) + 'ª medida, em ' + unid)
-            for c in range(12):
+            for c in range(self.tableData.columnCount()):
                 item = vol_data[c][r]
                 if isinstance(item, str):
-                    html += '<td>{}</td>'.format(item)
+                    html += '<td align="right">{}</td>'.format(item)
                 else:
                     item = "{:.2f}".format(item).replace(".", ",")
-                    html += '<td>{}</td>'.format(item)
+                    html += '<td align="right">{}</td>'.format(item)
             html += '</tr>'
         html += '</tbody></table>'
         html += '<p><b>Resultados:</b></p>'
         html += '<table border="1" cellpadding="2" width="100%" style="border-collapse: collapse"><thead>'
         html += '<tr>'
-        for c in range(12 + 1):
+        for c in range(self.tableRes.columnCount() + 1):
             if c == 0:
-                html += '<th width="16%" bgcolor="#E5E4E2"></th>'
+                html += '<th width="20%" bgcolor="#E5E4E2"></th>'
             else:
                 html += '<th bgcolor="#E5E4E2">{}</th>'.format(c)
         html += '</tr></thead>'
         html += '<tbody>'
-        for r in range(3):
+        for r in range(self.tableRes.rowCount()):
             html += '<tr>'
             html += '<td bgcolor="#E5E4E2">{}</td>'.format(self.tableRes.verticalHeaderItem(r).text())
-            for c in range(12):
+            for c in range(self.tableRes.columnCount()):
                 item = res_data[c][r]
                 if isinstance(item, str):
-                    html += '<td>{}</td>'.format(item)
+                    html += '<td align="right">{}</td>'.format(item)
                 else:
                     item = "{:.2f}".format(item).replace(".", ",")
-                    html += '<td>{}</td>'.format(item)
+                    html += '<td align="right">{}</td>'.format(item)
             html += '</tr>'
         html += '</tbody></table>'
         html += '<p>&nbsp;</p>'
