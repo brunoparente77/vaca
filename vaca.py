@@ -879,26 +879,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         html += '<p><b>Identificação do equipamento: </b><big>' + self.instId.text() + '</big><br>'
         html += '<b>Tipo:</b> ' + self.instKind.currentText() + ', ' + self.instMat.currentText() + '</p>'
         html += '<p><b>Data de realização do ensaio:</b> ' + self.dateEdit.date().toString("dd/MM/yyyy") + '</p>'
-        html += '<table width="100%"><tr><td width="50%">'
+        #html += '<table width="100%"><tr><td width="50%">'
         html += '<p><b>Identificação dos instrumentos de medida utilizados:</b><br>'
         html += 'Balança: ' + self.balId.text() + '<br>'
         html += 'Termômetro (temp. ambiente): ' + self.termId.text() + '<br>'
         html += 'Termômetro (temp. da água): ' + self.term2Id.text() + '<br>'
         html += 'Barômetro: ' + self.barId.text() + '<br>'
         html += 'Higrômetro: ' + self.higId.text() + '</p>'
-        html += '</td><td width="50%"></td>'
+        #html += '</td><td width="50%"></td>'
         html += '<p><b>Parâmetros ambientais:</b><br>'
         html += 'Temperatura ambiente: ' + str(self.tempAmb.value()) + '°C<br>'
         html += 'Pressão atmosférica: ' + str(self.presAtm.value()) + ' hPa<br>'
         html += 'Umidade relativa do ar: ' + str(self.umidRel.value()) + '%<br>'
         html += 'Perda por evaporação: ' + str(self.mEvap.value()) + ' g<br>'
-        html += 'Densidade das massas de referência: ' + str(self.densPesos.value()) + ' g·mL⁻¹</p></td></tr></table>'
+        html += 'Densidade das massas de referência: ' + str(self.densPesos.value()) + ' g·mL⁻¹</p>'#</td></tr></table>'
         html += '<p><b>Dados das medidas de massa:</b></p>'
         html += '<table border="1" cellpadding="2" width="100%" style="border-collapse: collapse"><thead>'
         html += '<tr>'
         for c in range(self.tableData.columnCount() + 1): # nº de colunas da tabela + uma do cabeçalho vertical
             if c == 0:
-                html += '<th width="20%" bgcolor="#E5E4E2"></th>'
+                html += '<th width="22%" bgcolor="#E5E4E2"></th>'
             else:
                 html += '<th bgcolor="#E5E4E2">{}</th>'.format(c)
         html += '</tr></thead>'
@@ -920,7 +920,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         html += '<tr>'
         for c in range(self.tableData.columnCount() + 1):
             if c == 0:
-                html += '<th width="20%" bgcolor="#E5E4E2"></th>'
+                html += '<th width="22%" bgcolor="#E5E4E2"></th>'
             else:
                 html += '<th bgcolor="#E5E4E2">{}</th>'.format(c)
         html += '</tr></thead>'
@@ -945,7 +945,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         html += '<tr>'
         for c in range(self.tableRes.columnCount() + 1):
             if c == 0:
-                html += '<th width="20%" bgcolor="#E5E4E2"></th>'
+                html += '<th width="22%" bgcolor="#E5E4E2"></th>'
             else:
                 html += '<th bgcolor="#E5E4E2">{}</th>'.format(c)
         html += '</tr></thead>'
