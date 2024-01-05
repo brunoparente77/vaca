@@ -316,7 +316,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # ISO 4787:2021
             for i, j in enumerate(res_array):
                 for x, y in enumerate(j):
-                    self.tableRes.setItem(x, i, QTableWidgetItem("%.2f" % y))
+                    item = str('{:.3f}'.format(y)).replace(".", ",")
+                    self.tableRes.setItem(x, i, QTableWidgetItem(item))
             # Não é legal o usuário poder editar os resultos. Bloqueando!
             self.tableRes.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
             # Calculando os limites, de acordo com a norma ISO do instrumento
@@ -366,7 +367,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                         "esta vidraria. A conformidade dos "
                                                         "resultados não será avaliada.")
                             if e_vnom < 1e+5:
-                                if abs(float(_item.text())) > e_vnom:
+                                if abs(float(_item.text().replace(",", "."))) > e_vnom:
                                     _item.setToolTip("Não conforme com vidraria Classe A da ISO 1042:1998.")
                                     _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
                                 else:
@@ -402,7 +403,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                         "esta vidraria. A conformidade dos "
                                                         "resultados não será avaliada.")
                             if e_vnom < 1e+5:
-                                if abs(float(_item.text())) > e_vnom:
+                                if abs(float(_item.text().replace(",", "."))) > e_vnom:
                                     _item.setToolTip("Não conforme com vidraria Classe A da ISO 1042:1998.")
                                     _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
                                 else:
@@ -439,7 +440,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                         "esta vidraria. A conformidade dos "
                                                         "resultados não será avaliada.")
                             if e_vnom < 1e+5:
-                                if abs(float(_item.text())) > e_vnom:
+                                if abs(float(_item.text().replace(",", "."))) > e_vnom:
                                     _item.setToolTip("Não conforme com vidraria Classe A|AS da ISO 385:2005.")
                                     _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
                                 else:
@@ -480,7 +481,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                         "esta vidraria. A conformidade dos "
                                                         "resultados não será avaliada.")
                             if e_vnom < 1e+5:
-                                if abs(float(_item.text())) > e_vnom:
+                                if abs(float(_item.text().replace(",", "."))) > e_vnom:
                                     _item.setToolTip("Não conforme com vidraria Classe A|AS da ISO 835:2007.")
                                     _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
                                 else:
@@ -521,7 +522,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                         "esta vidraria. A conformidade dos "
                                                         "resultados não será avaliada.")
                             if e_vnom < 1e+5:
-                                if abs(float(_item.text())) > e_vnom:
+                                if abs(float(_item.text().replace(",", "."))) > e_vnom:
                                     _item.setToolTip("Não conforme com vidraria Classe A|AS da ISO 648:1998.")
                                     _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
                                 else:
@@ -546,7 +547,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             res_data = res_array
             for i, j in enumerate(res_array):
                 for x, y in enumerate(j):
-                    self.tableRes.setItem(x, i, QTableWidgetItem("%.2f" % y))
+                    item = str('{:.3f}'.format(y)).replace(".", ",")
+                    self.tableRes.setItem(x, i, QTableWidgetItem(item))
             # Não é legal o usuário poder editar os resultos. Bloqueando!
             self.tableRes.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
             # Calculando os limites, de acordo com a norma ISO do instrumento
@@ -570,7 +572,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             else:
                                 e_vnom = 2.5                    
                             limite = v_nom / v_s * e_vnom
-                            if abs(float(_item.text())) > limite:
+                            if abs(float(_item.text().replace(",", "."))) > limite:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-2:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
                             else:
@@ -594,7 +596,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             else:
                                 e_vnom = 2.0
                             limite = v_nom / v_s * e_vnom
-                            if abs(float(_item.text())) > limite:
+                            if abs(float(_item.text().replace(",", "."))) > limite:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-2:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
                             else:
@@ -616,7 +618,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             else:
                                 e_vnom = 2.5
                             limite = v_nom / v_s * e_vnom
-                            if abs(float(_item.text())) > limite:
+                            if abs(float(_item.text().replace(",", "."))) > limite:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-2:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
                             else:
@@ -640,7 +642,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             else:
                                 e_vnom = 1.5
                             limite = v_nom / v_s * e_vnom
-                            if abs(float(_item.text())) > limite:
+                            if abs(float(_item.text().replace(",", "."))) > limite:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-2:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
                             else:
@@ -665,7 +667,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             else:
                                 e_vnom = 8.0
                             limite = v_nom / v_s * e_vnom
-                            if abs(float(_item.text())) > limite:
+                            if abs(float(_item.text().replace(",", "."))) > limite:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-2:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
                             else:
@@ -691,7 +693,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             else:
                                 e_vnom = 8.0
                             limite = v_nom / v_s * e_vnom
-                            if abs(float(_item.text())) > limite:
+                            if abs(float(_item.text().replace(",", "."))) > limite:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-2:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
                             else:
@@ -714,7 +716,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             else:
                                 e_vnom = 0.6
                             limite = v_nom / v_s * e_vnom
-                            if abs(float(_item.text())) > limite:
+                            if abs(float(_item.text().replace(",", "."))) > limite:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-3:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
                             else:
@@ -736,7 +738,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             else:
                                 e_vnom = 0.1
                             limite = v_nom / v_s * e_vnom
-                            if abs(float(_item.text())) > limite:
+                            if abs(float(_item.text().replace(",", "."))) > limite:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-3:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
                             else:
@@ -759,7 +761,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             else:
                                 e_vnom = 0.6
                             limite = v_nom / v_s * e_vnom
-                            if abs(float(_item.text())) > limite:
+                            if abs(float(_item.text().replace(",", "."))) > limite:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-3:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
                             else:
@@ -774,7 +776,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             # verificando qual o limite dos erros na ISO 8655-3:2022
                             e_vnom = 0.1
                             limite = v_nom / v_s * e_vnom
-                            if abs(float(_item.text())) > limite:
+                            if abs(float(_item.text().replace(",", "."))) > limite:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-3:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
                             else:
@@ -797,7 +799,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             else:
                                 e_vnom = 2.0
                             limite = v_nom / v_s * e_vnom
-                            if abs(float(_item.text())) > limite:
+                            if abs(float(_item.text().replace(",", "."))) > limite:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-5:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
                             else:
@@ -821,7 +823,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             else:
                                 e_vnom = 1.0
                             limite = v_nom / v_s * e_vnom
-                            if abs(float(_item.text())) > limite:
+                            if abs(float(_item.text().replace(",", "."))) > limite:
                                 _item.setToolTip("Não conforme com os limites da norma ISO 8655-5:2022.")
                                 _item.setIcon(QIcon(os.path.join(basedir, "alert.svg")))
                             else:
@@ -837,8 +839,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             printer = QtPrintSupport.QPrinter(QtPrintSupport.QPrinter.HighResolution)
             printer.setOutputFormat(QtPrintSupport.QPrinter.PdfFormat)
             printer.setPageSize(QPageSize.A4)
-            printer.setPageOrientation(QPageLayout.Portrait)
+            printer.setPageOrientation(QPageLayout.Landscape)
             printer.setPageMargins(QMargins(0, 0, 0, 0))
+            printer.setCreator("V.A.Ca. v. Angus")
             printer.setOutputFileName(filename)
             document = self.makeTableDocument()
             document.print_(printer)
@@ -864,13 +867,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             unid = 'mL'                
         document = QTextDocument()
-        document.setPageSize(QSizeF(596, 842))
-        document.setDocumentMargin(10)
+        document.setPageSize(QSizeF(842, 595))
+        document.setDocumentMargin(43)
         document.setDefaultFont(QFont("Cantarell", 7))
         html = """<html>
         <head>
         <title>Relatório de ensaio</title>
-        <meta name="generator" content="V.A.CA. 1.0"/>
         </head>
         <body dir="ltr">
         <p align="right"><small>Página 1 de 2</small></p>
@@ -879,30 +881,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         html += '<p><b>Identificação do equipamento: </b><big>' + self.instId.text() + '</big><br>'
         html += '<b>Tipo:</b> ' + self.instKind.currentText() + ', ' + self.instMat.currentText() + '</p>'
         html += '<p><b>Data de realização do ensaio:</b> ' + self.dateEdit.date().toString("dd/MM/yyyy") + '</p>'
-        #html += '<table width="100%"><tr><td width="50%">'
+        html += '<table width="100%"><tr><td width="50%">'
         html += '<p><b>Identificação dos instrumentos de medida utilizados:</b><br>'
         html += 'Balança: ' + self.balId.text() + '<br>'
         html += 'Termômetro (temp. ambiente): ' + self.termId.text() + '<br>'
         html += 'Termômetro (temp. da água): ' + self.term2Id.text() + '<br>'
         html += 'Barômetro: ' + self.barId.text() + '<br>'
         html += 'Higrômetro: ' + self.higId.text() + '</p>'
-        #html += '</td><td width="50%"></td>'
+        html += '</td><td width="50%"></td>'
         html += '<p><b>Parâmetros ambientais:</b><br>'
         html += 'Temperatura ambiente: ' + str(self.tempAmb.value()) + '°C<br>'
         html += 'Pressão atmosférica: ' + str(self.presAtm.value()) + ' hPa<br>'
         html += 'Umidade relativa do ar: ' + str(self.umidRel.value()) + '%<br>'
         html += 'Perda por evaporação: ' + str(self.mEvap.value()) + ' g<br>'
-        html += 'Densidade das massas de referência: ' + str(self.densPesos.value()) + ' g·mL⁻¹</p>'#</td></tr></table>'
+        html += 'Densidade das massas de referência: ' + str(self.densPesos.value()) + ' g·mL⁻¹</p></td></tr></table>'
         html += '<p><b>Dados das medidas de massa:</b></p>'
         html += '<table border="1" cellpadding="2" width="100%" style="border-collapse: collapse"><thead>'
         html += '<tr>'
         for c in range(self.tableData.columnCount() + 1): # nº de colunas da tabela + uma do cabeçalho vertical
             if c == 0:
-                html += '<th width="22%" bgcolor="#E5E4E2"></th>'
+                html += '<th width="20%" bgcolor="#E5E4E2"></th>'
             else:
-                html += '<th bgcolor="#E5E4E2">{}</th>'.format(c)
+                html += '<th  width="16%" bgcolor="#E5E4E2">{}</th>'.format(c)
         html += '</tr></thead>'
-        html += '<tbody>'
         for r in range(self.tableData.rowCount()): # nº de linhas
             html += '<tr>'
             html += '<td bgcolor="#E5E4E2">{}</td>'.format(self.tableData.verticalHeaderItem(r).text())
@@ -913,18 +914,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 else:
                     html += '<td align="right">{}</td>'.format(str(item).replace(".", ","))
             html += '</tr>'
-        html += '</tbody></table>'
+        html += '</table>'
         html += '<div style="page-break-before:always"><p align="right"><small>Página 2 de 2</small></p>'
         html += '<p><b>Dados das medidas convertidos para volume:</b></p>'
         html += '<table border="1" cellpadding="2" width="100%" style="border-collapse: collapse"><thead>'
         html += '<tr>'
         for c in range(self.tableData.columnCount() + 1):
             if c == 0:
-                html += '<th width="22%" bgcolor="#E5E4E2"></th>'
+                html += '<th width="20%" bgcolor="#E5E4E2"></th>'
             else:
-                html += '<th bgcolor="#E5E4E2">{}</th>'.format(c)
+                html += '<th width="16%" bgcolor="#E5E4E2">{}</th>'.format(c)
         html += '</tr></thead>'
-        html += '<tbody>'
         for r in range(self.tableData.rowCount() - 2):
             html += '<tr>'
             if r == 0 or r == 1:
@@ -936,18 +936,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if isinstance(item, str):
                     html += '<td align="right">{}</td>'.format(item)
                 else:
-                    item = "{:.2f}".format(item).replace(".", ",")
+                    item = "{:.3f}".format(item).replace(".", ",")
                     html += '<td align="right">{}</td>'.format(item)
             html += '</tr>'
-        html += '</tbody></table>'
+        html += '</table>'
         html += '<p><b>Resultados:</b></p>'
         html += '<table border="1" cellpadding="2" width="100%" style="border-collapse: collapse"><thead>'
         html += '<tr>'
         for c in range(self.tableRes.columnCount() + 1):
             if c == 0:
-                html += '<th width="22%" bgcolor="#E5E4E2"></th>'
+                html += '<th width="20%" bgcolor="#E5E4E2"></th>'
             else:
-                html += '<th bgcolor="#E5E4E2">{}</th>'.format(c)
+                html += '<th width="16%" bgcolor="#E5E4E2">{}</th>'.format(c)
         html += '</tr></thead>'
         html += '<tbody>'
         for r in range(self.tableRes.rowCount()):
@@ -958,15 +958,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if isinstance(item, str):
                     html += '<td align="right">{}</td>'.format(item)
                 else:
-                    item = "{:.2f}".format(item).replace(".", ",")
+                    item = "{:.3f}".format(item).replace(".", ",")
                     html += '<td align="right">{}</td>'.format(item)
             html += '</tr>'
         html += '</tbody></table>'
         html += '<p>&nbsp;</p>'
         html += '<hr align="center" width=20% noshade>'
         html += '<p align="center">Responsável pelo ensaio</p>'
-        html += '<p>&nbsp;</p>'
-        html += '<p>&nbsp;</p>'
         html += '<p>&nbsp;</p>'
         html += '<p align="right"><small>Impresso por V.A.Ca (v. <i>Angus</i>) em {}.</small></p></body></html>'.format(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         document.setHtml(html)
